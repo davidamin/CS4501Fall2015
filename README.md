@@ -66,4 +66,14 @@ Rides-
 	planned stops (food or rider drop off)-> list of strings
 	comments-> string
 	maximum distance to drive outside route or destination -> int
+	active -> boolean
 
+Service layer
+create user
+set user inactive 
+update user
+getUser->by email, name, phone number, university, guid
+create ride
+update ride
+set ride inactive
+getRide->source, destination, time leave, time arrive, guid, max distance, riders listed

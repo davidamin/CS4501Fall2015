@@ -17,7 +17,32 @@ class User(models.Model):
 	university = models.CharField(max_length = 100, blank=True)
 	#ratings???
 	vehicle = models.ForeignKey(Vehicle)
+	active = models.BooleanField(default=True)
 	
 class Vehicle(models.Model)
 	max_seats = models.IntegerField(blank=True)
+	trunk_space = models.FloatField(blank=True)
+	notes = models.CharField(max_length = 500, blank=True)
+	condition = models.CharField(max_length = 100, blank=True)
+	make = models.CharField(max_length = 30, blank=True)
+	model = models.CharField(max_length = 30, blank=True)
+	year = models.IntegerField(blank=True)
+	color = models.CharField(max_length = 15, blank=True)
+	plates = models.CharField(max_length = 10, blank=True)
+	uninsured = models.BooleanField(default=False)
+	road_assistance = models.CharField(max_length = 30, blank=True)
+	accomodations = models.CharField(max_length = 30, blank=True)
 	
+class Ride(models.Model):
+	car = models.ForeignKey(Vehicle)
+	driver = models.ForeignKey(User)
+	leave_time = models.DatetimeField(blank = True)
+	arrive_time = models.DatetimeField(blank = True)
+	destination = models.CharField(max_length = 30, blank=True)
+	start = models.CharField(max_length = 30, blank=True)
+	#riders
+	#cost structure
+	#planned stops
+	comments = models.CharField(max_length = 300, blank=True)
+	max_miles_offroute = models.FloatField(blank=True)
+	active = models.BooleanField(default=True)
