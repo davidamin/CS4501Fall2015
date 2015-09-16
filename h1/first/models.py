@@ -19,7 +19,7 @@ class User(models.Model):
     vehicle = models.ForeignKey(Vehicle)
     active = models.BooleanField(default=True)
 	
-class Vehicle(models.Model)
+class Vehicle(models.Model):
     max_seats = models.IntegerField(blank=True)
     trunk_space = models.FloatField(blank=True)
     notes = models.CharField(max_length = 500, blank=True)
