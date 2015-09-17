@@ -36,13 +36,13 @@ class User(models.Model):
 class Ride(models.Model):
     car = models.ForeignKey(Vehicle)
     driver = models.ForeignKey(User)
-    leave_time = models.DatetimeField(blank = True)
-    arrive_time = models.DatetimeField(blank = True)
-    destination = models.CharField(max_length = 30, blank=True)
-    start = models.CharField(max_length = 30, blank=True)
+    leave_time = models.DateTimeField(blank = True)
+    arrive_time = models.DateTimeField(blank = True)
+    destination = models.CharField(max_length = 30, blank = True)
+    start = models.CharField(max_length = 30, blank = True)
     #riders
     #cost structure
     #planned stops
-    comments = models.CharField(max_length = 300, blank=True)
-    max_miles_offroute = models.FloatField(blank=True)
-    active = models.BooleanField(default=True)
+    comments = models.CharField(max_length = 300, blank = True)
+    max_miles_offroute = models.FloatField(blank = True)
+    active = models.BooleanField(default = True)
