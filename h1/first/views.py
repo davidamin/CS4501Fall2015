@@ -23,8 +23,8 @@ def edit_user(request):
     else :
 		return JsonResponse({'ok':True, 'log': 'User Info Editted'})
 
-def edit_user(request):
+def deactivate_user(request):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
     else :
-        return JsonResponse({'ok':True, 'log': 'User Info Editted'})
+        return JsonResponse({'ok':True, 'log': 'User Account Deactivated'})
