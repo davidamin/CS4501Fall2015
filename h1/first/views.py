@@ -10,3 +10,21 @@ def add_vehicle(request):
     if request.method != 'GET':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be get'})
     return JsonResponse({'ok':True, 'log': 'Added vehicle'})
+
+def create_user(request):
+    if request.method != 'POST':
+		return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
+    else :
+		return JsonResponse({'ok':True, 'log': 'User Created'})
+	
+def edit_user(request):
+    if request.method != 'POST':
+		return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
+    else :
+		return JsonResponse({'ok':True, 'log': 'User Info Editted'})
+
+def edit_user(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
+    else :
+        return JsonResponse({'ok':True, 'log': 'User Info Editted'})
