@@ -1,1 +1,5 @@
-h1/first/__pycache__/*.pyc
+*.pyc
+__pycache__
+MANIFEST
+build/
+dist/
