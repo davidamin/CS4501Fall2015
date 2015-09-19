@@ -1,5 +1,19 @@
 # CS4501Fall2015
 
+UVA computing ids:
+Eric Shiao: es2py
+David Amin: dma3f
+Uday Varkhedar: urv9rh
+
+GitHub link:
+https://github.com/davidamin/CS4501Fall2015
+
+Blurb: 
+This project is an implementation of a ride share app for UVA students in particular initially but obviously with room to scale to different universities. Users should be able to register, see available rides, and arrange for rides with one another. Part of enabling this is to maintain and provide information for users to conveniently access.
+
+
+
+
 UriDE will be a platform for people (initially college students) to post when and where they’re planning on driving to, and find others who want to go to roughly the same location. This allows them to carpool, saving fuel and money, as well as providing a means of transport to those who may not have one. Systems exist to solve this problem, but they tend to be poorly structured and far from easy to use. Many are simply Facebook groups, relying on postings with no easy way to search, filter, or communicate. Our platform will aim to make finding a ride or advertising a ride far easier, help answer logistical questions that might otherwise be overlooked, and provide payment options if the individuals involved in the transaction would prefer to handle it through our service.
 The following is a set of user stories that will guide the initial development of the application:
 As a driver, I want to post the details of my travel
