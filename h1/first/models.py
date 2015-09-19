@@ -1,13 +1,13 @@
 from django.db import models
 
 class Vehicle(models.Model):
-    max_seats = models.IntegerField(blank=True)
-    trunk_space = models.FloatField(blank=True)
+    max_seats = models.IntegerField(default=0,  null=True)
+    trunk_space = models.FloatField(default= 0.0)
     notes = models.CharField(max_length = 500, blank=True)
     condition = models.CharField(max_length = 100, blank=True)
     make = models.CharField(max_length = 30, blank=True)
     model = models.CharField(max_length = 30, blank=True)
-    year = models.IntegerField(blank=True)
+    year = models.IntegerField(default=0)
     color = models.CharField(max_length = 15, blank=True)
     plates = models.CharField(max_length = 10, blank=True)
     uninsured = models.BooleanField(default=False)
