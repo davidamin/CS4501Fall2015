@@ -121,9 +121,35 @@ def edit_user(request):
         this_user = models.User.objects.get(pk=user)
     except:
         return JsonResponse({'ok': False, 'error': 'Failed to find user id ' + user})
-    
-        return JsonResponse({'ok':True, 'log': 'User Info Editted'})
+    if 'first' in request.POST:
+        this_user.first = request.POST['first']
+    if 'last' in request.POST:
+        this_user.last = request.POST['last']
+    if 'email' in request.POST:
+        this_user.email = request.POST['email']
+    if 'city' in request.POST:
+        this_user.city = request.POST['city']
+    if 'state' in request.POST:
+        this_user.state = request.POST['state']
+    if 'phone' in request.POST:
+        this_user.phone = request.POST['phone']
+    if 'payment_type' in request.POST:
+        this_user.payment = request.POST['payment_type']
+    if 'gender' in request.POST:
+        this_user.gender = request.POST['gender'']
+    if 'age' in request.POST:
+        this_user.age = request.POST['age']
+    new_user.save()
+    return JsonResponse({'ok':True, 'log': 'User Info Editted'})
 
+def update_password(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
+    try:
+        this_user = models.User.objects.get(pk=user)
+    except:
+        return JsonResponse({'ok': False, 'error': 'Failed to find user id ' + user})
+    
 def get_user(request):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
