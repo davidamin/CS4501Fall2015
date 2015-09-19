@@ -114,9 +114,9 @@ def create_user(request):
     new_user.save()
     return JsonResponse({'ok':True, 'log': 'User Created'})
 
-def edit_user(request):
+def edit_user(request, user):
     if request.method != 'POST':
-        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
     try:
         this_user = models.User.objects.get(pk=user)
     except:
@@ -142,31 +142,46 @@ def edit_user(request):
     new_user.save()
     return JsonResponse({'ok':True, 'log': 'User Info Editted'})
 
-def update_password(request):
+def update_password(request, user):
     if request.method != 'POST':
-        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+    try:
+        recover_user = models.User.objects.get(pk=user)
+    except:
+        return JsonResponse({'ok': False, 'error': 'Failed to find user id ' + user})
+    if 'password' in request.POST:
+        recover_user.password = request.POST['password']
+    return JsonResponse({'ok':True, 'log': 'Password Changed'})
+
+def get_user(request, user):
+    if request.method != 'GET':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be GET'})
     try:
         this_user = models.User.objects.get(pk=user)
     except:
         return JsonResponse({'ok': False, 'error': 'Failed to find user id ' + user})
-    
-def get_user(request):
+    ret_val = serializers.serialize('json',[this_user,])
+    return JsonResponse({'ok': True,'car': ret_val})
+        
+def deactivate_user(request, user):
     if request.method != 'POST':
-        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
-    try:
-        this_user = models.User.objects.get(pk=user)
-    except:
-        return JsonResponse({'ok': False, 'error': 'Failed to find user id ' + user})
-    
-        return JsonResponse({'ok':True, 'log': 'User Info Editted'})
-def deactivate_user(request):
-    if request.method != 'POST':
-        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+    if 'deactivate' in request.POST:
+        try:
+            deactivate_user = models.User.objects.get(pk=user)
+        except:
+            return JsonResponse({'ok': False, 'error': 'Failed to find user id' + user})
     else :
         return JsonResponse({'ok':True, 'log': 'User Account Deactivated'})
 
 def create_ride(request):
     if request.method != 'POST':
-        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
     else:
         return JsonResponse({'ok':True, 'log': 'Ride Created'})
+        
+def ride_list(request):
+
+def edit_ride(request):
+
+def delete_ride(request):
