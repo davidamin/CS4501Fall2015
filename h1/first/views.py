@@ -49,7 +49,8 @@ def get_car(request, car):
         v = models.Vehicle.objects.get(pk=car)
     except models.Vehicle.DoesNotExist:
         return JsonResponse({'ok': False, 'error': 'Failed to find car id ' + car})
-    return JsonResponse({'ok':True,'car':v})
+    ret_val = serializers.serialize('json',[v,])
+    return JsonResponse({'ok':True,'car':ret_val})
 
 def create_user(request):
     if request.method != 'POST':
