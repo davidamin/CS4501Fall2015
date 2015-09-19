@@ -55,12 +55,10 @@ def get_car(request, car):
 def update_car(request, car):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
-    
     try:
         this_car = models.Vehicle.objects.get(pk=car)
     except:
         return JsonResponse({'ok': False, 'error': 'Failed to find car id ' + car})
-
     if 'max_seats' in request.POST:
         this_car.max_seats = request.POST['max_seats']
     if 'trunk_space' in request.POST:
@@ -89,17 +87,60 @@ def update_car(request, car):
 def create_user(request):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
-    else :
-        return JsonResponse({'ok':True, 'log': 'User Created'})
+    #first, last, email, password, address, phone, payment type, gender, license number, age, active
+    new_user = models.User()
+    if 'username' in request.POST:
+        new_user.username = request.POST['username']
+    if 'first' in request.POST:
+        new_user.first = request.POST['first']
+    if 'last' in request.POST:
+        new_user.last = request.POST['last']
+    if 'email' in request.POST:
+        new_user.email = request.POST['email']
+    if 'password' in request.POST: #TODO: hash the pw before saving
+        new_user.password = request.POST['password']
+    if 'city' in request.POST:
+        new_user.city = request.POST['city']
+    if 'state' in request.POST:
+        new_user.state = request.POST['state']
+    if 'phone' in request.POST:
+        new_user.phone = request.POST['phone']
+    if 'payment_type' in request.POST:
+        new_user.payment = request.POST['payment_type']
+    if 'gender' in request.POST:
+        new_user.gender = request.POST['gender'']
+    if 'age' in request.POST:
+        new_user.age = request.POST['age']
+    new_user.save()
+    return JsonResponse({'ok':True, 'log': 'User Created'})
 
 def edit_user(request):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
-    else :
+    try:
+        this_user = models.User.objects.get(pk=user)
+    except:
+        return JsonResponse({'ok': False, 'error': 'Failed to find user id ' + user})
+    
         return JsonResponse({'ok':True, 'log': 'User Info Editted'})
 
+def get_user(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
+    try:
+        this_user = models.User.objects.get(pk=user)
+    except:
+        return JsonResponse({'ok': False, 'error': 'Failed to find user id ' + user})
+    
+        return JsonResponse({'ok':True, 'log': 'User Info Editted'})
 def deactivate_user(request):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
     else :
         return JsonResponse({'ok':True, 'log': 'User Account Deactivated'})
+
+def create_ride(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
+    else:
+        return JsonResponse({'ok':True, 'log': 'Ride Created'})
