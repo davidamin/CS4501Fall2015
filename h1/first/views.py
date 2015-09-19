@@ -114,7 +114,7 @@ def create_user(request):
     new_user.save()
     return JsonResponse({'ok':True, 'log': 'User Created'})
 
-def edit_user(request, user):
+def update_user(request, user):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
     try:
@@ -189,14 +189,62 @@ def login(request):
     else:
         return JsonResponse({'ok': False, 'error': 'Username or password was incorrect'})
 
-def create_ride(request):
+def create_ride(request, user, car):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
-    else:
-        return JsonResponse({'ok':True, 'log': 'Ride Created'})
+    new_ride = models.Ride()    
+    new_ride.car = car
+    new_ride.driver = user
+    if 'leave_time' in request.POST:
+        new_ride.leave_time = request.POST['leave_time']
+    if 'arrive_time' in request.POST:
+        new_ride.arrive_time = request.POST['arrive_time']
+    if 'destination' in request.POST:
+        new_ride.destination = request.POST['destination']
+    if 'start' in request.POST:
+        new_ride.start = request.POST['start']
+    if 'comments' in request.POST:
+        new_ride.comments = request.POST['comments']
+    if 'max_miles_offroute' in request.POST:
+        new_ride.max_miles_offroute = request.POST['max_miles_offroute']
+    new_ride.save()
+    return JsonResponse({'ok':True, 'log': 'Ride Created'})
         
 def ride_list(request):
-
-def edit_ride(request):
-
-def delete_ride(request):
+    rides = models.Ride.objects.all()
+    formatted = [str(ride.driver) + str(ride.make) + str(ride.model) + '\n' for ride in rides]
+    return JsonResponse(serializers.serialize("json", models.Vehicle.objects.all()),safe=False)
+    
+def update_ride(request, ride):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+    try:
+        this_ride = models.Ride.objects.get(pk=ride)
+    except:
+        return JsonResponse({'ok': False, 'error': 'Failed to find ride id: ' + ride})
+    if 'leave_time' in request.POST:
+        this_ride.leave_time = request.POST['leave_time']
+    if 'arrive_time' in request.POST:
+        this_ride.arrive_time = request.POST['arrive_time']
+    if 'destination' in request.POST:
+        this_ride.destination = request.POST['destination']
+    if 'start' in request.POST:
+        this_ride.start = request.POST['start']
+    if 'comments' in request.POST:
+        this_ride.comments = request.POST['comments']
+    if 'max_miles_offroute' in request.POST:
+        this_ride.max_miles_offroute = request.POST['max_miles_offroute']
+    this_car.save()
+    return JsonResponse({'ok':True, 'log': 'Ride updated'})
+    
+def deactivate_ride(request, ride):
+    if request.method != 'POST':
+            return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+        if 'deactivate' in request.POST:
+            try:
+                deactivate_ride = models.User.objects.get(pk=ride)
+            except:
+                return JsonResponse({'ok': False, 'error': 'Failed to find ride id' + user})
+            deactivate_ride.active = False
+            deactivate_ride.save()
+        return JsonResponse({'ok':True, 'log': 'Ride Deactivated'})
