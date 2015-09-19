@@ -4,5 +4,6 @@ from . import views
 
 urlpatterns = patterns('',
 	url(r'^$',views.index),
-	url(r'^add_vehicle$',views.add_vehicle)
+	url(r'^add_vehicle$',views.add_vehicle),
+	url(r'^all_cars$',views.car_list),
 )
