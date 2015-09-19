@@ -171,8 +171,23 @@ def deactivate_user(request, user):
             deactivate_user = models.User.objects.get(pk=user)
         except:
             return JsonResponse({'ok': False, 'error': 'Failed to find user id' + user})
-    else :
-        return JsonResponse({'ok':True, 'log': 'User Account Deactivated'})
+        deactivate_user.active = False
+        deactivate_user.save()
+    return JsonResponse({'ok':True, 'log': 'User Account Deactivated'})
+
+def login(request): 
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+    username = request.POST['username']
+    password = request.POST['password'] #TODO: hashing
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.active:
+            return JsonResponse({'ok': True, 'log': 'Login successful'})
+        else: 
+            return JsonResponse({'ok': False, 'error': 'User account was deactivated'})
+    else:
+        return JsonResponse({'ok': False, 'error': 'Username or password was incorrect'})
 
 def create_ride(request):
     if request.method != 'POST':
