@@ -84,7 +84,7 @@ def update_car(request, car):
     this_car.save()
     return JsonResponse({'ok':True, 'log': 'Updated vehicle ' + car})
 
-def create_user(request):
+def add_user(request):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be post'})
     #first, last, email, password, address, phone, payment type, gender, license number, age, active
@@ -236,6 +236,16 @@ def update_ride(request, ride):
         this_ride.max_miles_offroute = request.POST['max_miles_offroute']
     this_car.save()
     return JsonResponse({'ok':True, 'log': 'Ride updated'})
+    
+def get_ride(request, ride):
+    if request.method != 'GET':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be get'})
+    try:
+        ride = models.Ride.objects.get(pk=ride)
+    except models.Ride.DoesNotExist:
+        return JsonResponse({'ok': False, 'error': 'Failed to find ride id: ' + ride})
+    ret_val = serializers.serialize('json',[ride,])
+    return JsonResponse({'ok':True,'car':ret_val})
     
 def deactivate_ride(request, ride):
     if request.method != 'POST':

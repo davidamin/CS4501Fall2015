@@ -38,7 +38,6 @@ class Migration(migrations.Migration):
                 ('state', models.CharField(max_length=2)),
                 ('phone_number', models.CharField(max_length=10)),
                 ('payment_type', models.IntegerField(blank=True)),
-                ('payment_string', models.CharField(max_length=100, blank=True)),
                 ('gender', models.BooleanField(default=False)),
                 ('license_number', models.CharField(max_length=20, blank=True)),
                 ('age', models.IntegerField(blank=True)),
