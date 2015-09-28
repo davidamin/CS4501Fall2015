@@ -1,0 +1,18 @@
+body {
+    font-size: 15px;
+    color: black;
+}
+
+@media(min-width:767px) {
+    .navbar {
+        padding: 5px 0;
+        -webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
+        -moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
+        transition: background .5s ease-in-out,padding .5s ease-in-out;
+        font-size: 15px;
+    }
+
+    .top-nav-collapse {
+        padding: 0;
+    }
+}
