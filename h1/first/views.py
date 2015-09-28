@@ -139,7 +139,7 @@ def update_user(request, user):
         this_user.gender = request.POST['gender'']
     if 'age' in request.POST:
         this_user.age = request.POST['age']
-    new_user.save()
+    this_user.save()
     return JsonResponse({'ok':True, 'log': 'User Info Editted'})
 
 def update_password(request, user):
@@ -161,7 +161,7 @@ def get_user(request, user):
     except:
         return JsonResponse({'ok': False, 'error': 'Failed to find user id ' + user})
     ret_val = serializers.serialize('json',[this_user,])
-    return JsonResponse({'ok': True,'car': ret_val})
+    return JsonResponse({'ok': True,'user': ret_val})
         
 def deactivate_user(request, user):
     if request.method != 'POST':
