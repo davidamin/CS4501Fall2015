@@ -36,8 +36,32 @@
         
         <!-- content view -->
         <div class="content">
-            <div class="content-page rides-list"> 
-                <p> hi </p>
+            <div class="content-page rides-list pagination-centered"> 
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search-form" placeholder="Find a ride..." aria-label="...">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default search-button">Search</button>
+                        <button type="button" class="btn btn-default" id="adv-search-button"> Advanced Search </button>
+                    </div>
+                </div>
+                <div class="input-group hidden" id="adv-search">
+                
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <th> Driver </th> 
+                        <th> Starting Point </th> 
+                        <th> Destination </th> 
+                        <th> Time of Departure </th> 
+                        <th> ETA/Time of Arrival</th> 
+                        <th> Detour Miles </th> 
+                        <th> Seats Available</th> 
+                        <th> $ </th> 
+                    </thead>
+                    <tbody id = "rides">
+                        
+                    </tbody>
+                </table>
             </div>
             
             <div class="content-page post-ride hidden">
@@ -45,7 +69,30 @@
             </div>
             
             <div class="content-page user-profile hidden">
-                <p> profile </p>
+                <div class="col-xs-12 col-md-3" id="profile-pic">
+                    <img class="img-rounded" alt="Profile picture" height="300px" width="200px">
+                </div>
+                <div class="col-xs-12 col-md-9" id ="profile-info">
+                    <h2 id="name"> Marco Polo</h2>
+                    <p id="gender"> Gender: </p>
+                    <p id="city"> City: NOVA </small></p>
+                    <p id="phone"> Listed Number: abc-123-test </p>
+                    <p id="email"> Listed Email Address: some email </p>
+                    <div class="row">
+                        <div class="panel panel-default col-xs-6 col-md-6">
+                            <div class="panel-heading"> Comments </div>
+                            <table class="table" id="prev-rides">
+                            
+                            </table>
+                        </div>
+                        <div class="panel panel-default col-xs-6 col-md-6">
+                            <div class="panel-heading"> Previous Rides </div>
+                            <table class="table" id="comments">
+                            
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>
