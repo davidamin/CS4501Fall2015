@@ -36,8 +36,30 @@
         
         <!-- content view -->
         <div class="content">
-            <div class="content-page rides-list"> 
-                <p> hi </p>
+            <div class="content-page rides-list pagination-centered"> 
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search-form" placeholder="Find a ride..." aria-label="...">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default search-button">Search</button>
+                         <button type="button" class="btn btn-default" id="adv-search-button"> Advanced Search </button>
+                    </div>
+                </div>
+                
+                <table class="table table-striped">
+                    <thead>
+                        <th> Driver </th> 
+                        <th> Starting Point </th> 
+                        <th> Destination </th> 
+                        <th> Time of Departure </th> 
+                        <th> ETA/Time of Arrival</th> 
+                        <th> Detour Miles </th> 
+                        <th> Seats Available</th> 
+                        <th> $ </th> 
+                    </thead>
+                    <tbody id = "rides">
+                        <
+                    </tbody>
+                </table>
             </div>
             
             <div class="content-page post-ride hidden">
