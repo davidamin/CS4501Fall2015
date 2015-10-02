@@ -108,7 +108,7 @@ def add_user(request):
     if 'payment_type' in request.POST:
         new_user.payment = request.POST['payment_type']
     if 'gender' in request.POST:
-        new_user.gender = request.POST['gender'']
+        new_user.gender = request.POST['gender']
     if 'age' in request.POST:
         new_user.age = request.POST['age']
     new_user.save()
@@ -136,10 +136,10 @@ def update_user(request, user):
     if 'payment_type' in request.POST:
         this_user.payment = request.POST['payment_type']
     if 'gender' in request.POST:
-        this_user.gender = request.POST['gender'']
+        this_user.gender = request.POST['gender']
     if 'age' in request.POST:
         this_user.age = request.POST['age']
-    new_user.save()
+    this_user.save()
     return JsonResponse({'ok':True, 'log': 'User Info Editted'})
 
 def update_password(request, user):
@@ -161,7 +161,7 @@ def get_user(request, user):
     except:
         return JsonResponse({'ok': False, 'error': 'Failed to find user id ' + user})
     ret_val = serializers.serialize('json',[this_user,])
-    return JsonResponse({'ok': True,'car': ret_val})
+    return JsonResponse({'ok': True,'user': ret_val})
         
 def deactivate_user(request, user):
     if request.method != 'POST':
@@ -250,11 +250,11 @@ def get_ride(request, ride):
 def deactivate_ride(request, ride):
     if request.method != 'POST':
             return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
-        if 'deactivate' in request.POST:
-            try:
-                deactivate_ride = models.User.objects.get(pk=ride)
-            except:
-                return JsonResponse({'ok': False, 'error': 'Failed to find ride id' + user})
-            deactivate_ride.active = False
-            deactivate_ride.save()
-        return JsonResponse({'ok':True, 'log': 'Ride Deactivated'})
+    if 'deactivate' in request.POST:
+        try:
+            deactivate_ride = models.User.objects.get(pk=ride)
+        except:
+            return JsonResponse({'ok': False, 'error': 'Failed to find ride id' + user})
+        deactivate_ride.active = False
+        deactivate_ride.save()
+    return JsonResponse({'ok':True, 'log': 'Ride Deactivated'})
