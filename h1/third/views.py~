@@ -1,4 +1,4 @@
-from django.shortcuts import render,render_to_response, get_object_or_404
+from django.shortcuts import render
 from django.template import Context, RequestContext, loader
 from django.template.loader import get_template
 

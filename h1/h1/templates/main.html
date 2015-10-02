@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+    </head>
+    
+    <body>
+        <!-- navigation bar -->
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header page-scroll">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                      <span class="sr-only"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                    </button>
+                    <img> <!-- for a logo? -->
+                </div>
+
+                 <div class="collapse navbar-collapse navbar-ex1-collapse pull-right">
+                    <ul class="nav navbar-nav">
+                        <li> <a class="page-scroll nav-tab" id="rides-list" href="#see-rides">See Rides</a> </li>
+                        <li> <a class="page-scroll nav-tab" id="post-ride" href="#post-ride">Post a Ride</a> </li>
+                        <li> <a class="page-scroll nav-tab" id="user-profile" href="#user-profile">Your Profile</a> </li>
+                        <li> <a class="page-scroll nav-tab" id="logout" href="#logout">Logout</a> </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- content view -->
+        <div class="content">
+            <div class="content-page rides-list"> 
+                <p> User is {{ first }} {{ last }} </p>
+            </div>
+            
+            <div class="content-page post-ride hidden">
+                <p> some form </p>
+            </div>
+            
+            <div class="content-page user-profile hidden">
+                <p> profile </p>
+            </div>
+        </div>
+    </body>
+</html>
