@@ -3,6 +3,15 @@ from django.conf.urls import url, patterns
 from . import views
 
 urlpatterns = patterns('',
+<<<<<<< HEAD
 	#url(r'^$',views.index),
 	url(r'^ride_detail/(\d+)$',views.ride_detail),
+=======
+<<<<<<< HEAD
+	url(r'^ride_detail/(\d+)$',views.ride_detail),
+=======
+	url(r'^$',views.index),
+	url(r'^ride_detail$',views.ride_detail),
+>>>>>>> 5f88d9ebb002d674f493565c07be3d09cf53d42e
+>>>>>>> 03865d040139e6c30d7c988d1e540b473c5d6f86
 )
