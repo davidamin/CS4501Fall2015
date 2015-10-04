@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+    </head>
+    
+    <body>
+        <!-- navigation bar -->
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header page-scroll">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                      <span class="sr-only"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                    </button>
+                    <img> <!-- for a logo? -->
+                </div>
+
+                 <div class="collapse navbar-collapse navbar-ex1-collapse pull-right">
+                    <ul class="nav navbar-nav">
+                        <li> <a class="page-scroll nav-tab" id="rides-list" href="#see-rides">See Rides</a> </li>
+                        <li> <a class="page-scroll nav-tab" id="post-ride" href="#post-ride">Post a Ride</a> </li>
+                        <li> <a class="page-scroll nav-tab" id="user-profile" href="#user-profile">Your Profile</a> </li>
+                        <li> <a class="page-scroll nav-tab" id="logout" href="#logout">Logout</a> </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- content view -->
+        <div class="content">
+            <div class="content-page user-profile">
+                <div class="col-xs-12 col-md-3" id="map-embed">
+                    <img class="img-rounded" alt="Travel Map" height="300px" width="200px">
+                </div>
+                <div class="col-xs-12 col-md-9" id ="ride-info">
+                    <h2 id="Destination">Drive to {{ Destination }}</h2>
+		    <p id="driver"> Driver Name: {{ Driver }} </p>
+                    <p id="vehicle"> Vehicle : {{ vMake }} {{ vModel }} </p>
+                    <div class="row">
+                        <div class="panel panel-default col-xs-6 col-md-6">
+                            <div class="panel-heading"> Leave </div>
+                                <p id="leave-time"> {{ leave }} </p>
+                    		<p id="start-place"> {{ start }} </p>
+                        </div>
+                        <div class="panel panel-default col-xs-6 col-md-6">
+                            <div class="panel-heading"> Arrive </div>
+                    		<p id="arrive-time"> {{ arrive }} </p>
+                    		<p id="dest-place"> {{ Destination }} </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
