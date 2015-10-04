@@ -5,4 +5,4 @@ from django.http import JsonResponse
 # Create your views here.
 
 def ride_detail(request):
-    return JsonResponse({'ok':True, 'data': 'David'})
+    

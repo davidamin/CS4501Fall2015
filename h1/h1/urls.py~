@@ -3,10 +3,16 @@ from django.contrib import admin
 
 urlpatterns = patterns('',
     # Examples:
+<<<<<<< HEAD
     url(r'^models/', include('first.urls')),
     url(r'^exp/', include('second.urls')),
     url(r'^$', include('third.urls')),
+=======
+    url(r'^first/', include('first.urls')),
+    url(r'^view/', include('third.urls')),
+>>>>>>> 5f88d9ebb002d674f493565c07be3d09cf53d42e
     # url(r'^blog/', include('blog.urls')),
+    url(r'^exp/', include('second.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
 )
