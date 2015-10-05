@@ -13,16 +13,6 @@
         <!-- navigation bar -->
         <nav class="navbar navbar-default">
             <div class="container">
-                <div class="navbar-header page-scroll">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                      <span class="sr-only"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                    </button>
-                    <img> <!-- for a logo? -->
-                </div>
-
                  <div class="collapse navbar-collapse navbar-ex1-collapse pull-right">
                     <ul class="nav navbar-nav">
                         <li> <a class="page-scroll nav-tab" id="rides-list" href="#see-rides">See Rides</a> </li>
@@ -36,16 +26,127 @@
         
         <!-- content view -->
         <div class="content">
-            <div class="content-page rides-list"> 
-                <p> User is {{ first }} {{ last }} </p>
+            <div class="content-page container rides-list"> 
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search-form" placeholder="Find a ride..." aria-label="...">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default search-button">Search</button>
+                        <button type="button" class="btn btn-default" id="adv-search-button"> Advanced Search </button>
+                    </div>
+                </div>
+                <div class="input-group hidden" id="adv-search">
+                
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <th> Ride ID </th>
+                        <th> Driver </th> 
+                        <th> Start </th> 
+                        <th> Destination </th> 
+                        <th> Departure Time</th> 
+                        <th> ETA </th> 
+                        <th> Detour Miles </th> 
+                        <th> Seats </th> 
+                        <th> $ per Seat </th> 
+                        <th> | Button |</th> <!-- Column for the "choose ride button" -->
+                    </thead>
+                    <tbody id = "rides">
+                        <td> {ID} </td>
+                        <td> {driver} </td>
+                        <td> {place} </td> 
+                        <td> {place} </td>
+                        <td> {time} </td> 
+                        <td> {time} </td>
+                        <td> {miles detour} </td>
+                        <td> {seats} </td>
+                        <td> {$$$} </td>
+                        <td> <button type="button" class="btn btn-default" id="select-ride"> Select </button> </td>
+                    </tbody>
+                </table>
             </div>
             
-            <div class="content-page post-ride hidden">
-                <p> some form </p>
+            <div class="content-page  container post-ride hidden">
+                <h5> Post a New Ride </h5> 
+                <form>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label for="inputCity">City of Departure</label>
+                            <input type="email" class="form-control" id="inputCity" placeholder="Destination City">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Departure Time</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputFile"># of Seats</label>
+                        <div class="btn-group">
+                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li> 1 </li>
+                                <li> 2 </li>
+                                <li> 3 </li>
+                                <li> 4 </li>
+                                <li> 5 </li>
+                                <li> 6 </li>
+                                <li> 7+ </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-default">Post Ride</button>
+                </form>    
             </div>
             
-            <div class="content-page user-profile hidden">
-                <p> profile </p>
+            <div class="content-page user-profile container hidden">
+                <div class="col-xs-12 col-md-3" id="profile-pic">
+                    <img class="img-rounded" alt="Profile picture" height="300px" width="200px">
+                </div>
+                <div class="col-xs-12 col-md-9" id ="profile-info">
+                    <h2 id="name"> {first} {last} </h2>
+                    <p id="gender"> Gender: {gender} </p>
+                    <p id="city"> City: {City} </small></p>
+                    <p id="phone"> Listed Number: {number} </p>
+                    <p id="email"> Listed Email Address: {email-address} </p>
+                    <div class="row">
+                        <div class="panel panel-default col-xs-6 col-md-6">
+                            <div class="panel-heading"> Comments </div>
+                            <table class="table" id="prev-rides">
+                            
+                            </table>
+                        </div>
+                        <div class="panel panel-default col-xs-6 col-md-6">
+                            <div class="panel-heading"> Previous Rides </div>
+                            <table class="table" id="comments">
+                            
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-page ride-profile container hidden">
+                <div class="col-xs-12 col-md-3" id="map-embed">
+                    <img class="img-rounded" alt="Travel Map" height="300px" width="200px">
+                </div>
+                <div class="col-xs-12 col-md-9" id ="ride-info">
+                    <h2 id="Destination">Drive to {{ Destination }}</h2>
+                    <p id="driver"> Driver Name: {{ Driver }} </p>
+                    <p id="vehicle"> Vehicle : {{ vMake }} {{ vModel }} </p>
+                    <div class="row">
+                        <div class="panel panel-default col-xs-6 col-md-6">
+                            <div class="panel-heading"> Leave </div>
+                                <p id="leave-time"> {{ leave }} </p>
+                    		<p id="start-place"> {{ start }} </p>
+                        </div>
+                        <div class="panel panel-default col-xs-6 col-md-6">
+                            <div class="panel-heading"> Arrive </div>
+                    		<p id="arrive-time"> {{ arrive }} </p>
+                    		<p id="dest-place"> {{ Destination }} </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>

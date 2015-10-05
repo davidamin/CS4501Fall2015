@@ -1,0 +1,34 @@
+body {
+    font-size: 15px;
+    color: black;
+}
+
+@media(min-width:767px) {
+    .navbar {
+        padding: 5px 0;
+        -webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
+        -moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
+        transition: background .5s ease-in-out,padding .5s ease-in-out;
+        font-size: 15px;
+    }
+
+    .top-nav-collapse {
+        padding: 0;
+    }
+}
+
+.content-page {
+    width: 80%;
+    border-width: 2px;
+    border-style: double;
+    border-color: #888888;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    padding: 15px 10px 15px 10px;
+    box-shadow: 3px 5px 3px #555555;
+}
+
+.rides-list table {
+    margin-top: 30px;
+}
