@@ -4,6 +4,7 @@ from django.http import JsonResponse
 
 from first import models
 from django.core import serializers
+from datetime import datetime
 
 def index(request):
     return HttpResponse("Hello World!")
@@ -106,11 +107,13 @@ def add_user(request):
     if 'phone' in request.POST:
         new_user.phone = request.POST['phone']
     if 'payment_type' in request.POST:
-        new_user.payment = request.POST['payment_type']
+        new_user.payment_type = request.POST['payment_type']
     if 'gender' in request.POST:
         new_user.gender = request.POST['gender']
     if 'age' in request.POST:
         new_user.age = request.POST['age']
+    if 'vehicle' in request.POST:
+        new_user.vehicle = models.Vehicle.objects.get(pk=request.POST['vehicle'])
     new_user.save()
     return JsonResponse({'ok':True, 'log': 'User Created'})
 
@@ -189,12 +192,10 @@ def login(request):
     else:
         return JsonResponse({'ok': False, 'error': 'Username or password was incorrect'})
 
-def create_ride(request, user, car):
+def create_ride(request):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
     new_ride = models.Ride()    
-    new_ride.car = car
-    new_ride.driver = user
     if 'leave_time' in request.POST:
         new_ride.leave_time = request.POST['leave_time']
     if 'arrive_time' in request.POST:
@@ -207,6 +208,10 @@ def create_ride(request, user, car):
         new_ride.comments = request.POST['comments']
     if 'max_miles_offroute' in request.POST:
         new_ride.max_miles_offroute = request.POST['max_miles_offroute']
+    if 'vehicle' in request.POST:
+        new_ride.car = models.Vehicle.objects.get(pk=request.POST['vehicle'])
+    if 'driver' in request.POST:
+        new_ride.driver = models.User.objects.get(pk=request.POST['driver'])
     new_ride.save()
     return JsonResponse({'ok':True, 'log': 'Ride Created'})
         
@@ -223,9 +228,9 @@ def update_ride(request, ride):
     except:
         return JsonResponse({'ok': False, 'error': 'Failed to find ride id: ' + ride})
     if 'leave_time' in request.POST:
-        this_ride.leave_time = request.POST['leave_time']
+        this_ride.leave_time = datetime.strptime(request.POST['leave_time'], '%H:%M')
     if 'arrive_time' in request.POST:
-        this_ride.arrive_time = request.POST['arrive_time']
+        this_ride.arrive_time = datetime.strptime(request.POST['arrive_time'], '%H:%M')
     if 'destination' in request.POST:
         this_ride.destination = request.POST['destination']
     if 'start' in request.POST:
@@ -245,7 +250,7 @@ def get_ride(request, ride):
     except models.Ride.DoesNotExist:
         return JsonResponse({'ok': False, 'error': 'Failed to find ride id: ' + ride})
     ret_val = serializers.serialize('json',[ride,])
-    return JsonResponse({'ok':True,'car':ret_val})
+    return JsonResponse({'ok':True,'ride':ret_val})
     
 def deactivate_ride(request, ride):
     if request.method != 'POST':
