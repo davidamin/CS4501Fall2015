@@ -12,6 +12,7 @@
     <body>
         <!-- navigation bar -->
         <nav class="navbar navbar-default">
+            <a class="navbar-brand">Hoo's Ridin'</a>
             <div class="container">
                  <div class="collapse navbar-collapse navbar-ex1-collapse pull-right">
                     <ul class="nav navbar-nav">
@@ -111,14 +112,14 @@
                     <p id="email"> Listed Email Address: {email-address} </p>
                     <div class="row">
                         <div class="panel panel-default col-xs-6 col-md-6">
-                            <div class="panel-heading"> Comments </div>
+                            <div class="panel-heading"> Previous Rides </div>
                             <table class="table" id="prev-rides">
                             
                             </table>
                         </div>
                         <div class="panel panel-default col-xs-6 col-md-6">
-                            <div class="panel-heading"> Previous Rides </div>
-                            <table class="table" id="comments">
+                            <div class="panel-heading"> Comments </div>
+                            <table class="table" id="user-comments">
                             
                             </table>
                         </div>
@@ -133,7 +134,10 @@
                 <div class="col-xs-12 col-md-9" id ="ride-info">
                     <h2 id="Destination">Drive to {{ Destination }}</h2>
                     <p id="driver"> Driver Name: {{ Driver }} </p>
-                    <p id="vehicle"> Vehicle : {{ vMake }} {{ vModel }} </p>
+                    <div class="row"> 
+                        <p id="vehicle"> Vehicle : {{ vMake }} {{ vModel }} </p>
+                        <p id="seats"> Seats : {Seats Left} / {Seats Available} <p>
+                    </div>
                     <div class="row">
                         <div class="panel panel-default col-xs-6 col-md-6">
                             <div class="panel-heading"> Leave </div>
@@ -145,6 +149,17 @@
                     		<p id="arrive-time"> {{ arrive }} </p>
                     		<p id="dest-place"> {{ Destination }} </p>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="panel panel-default col-xs-12 col-md-12">
+                            <div class="panel-heading"> Comments  </div>
+                            <table class="table" id="ride-comments">
+                                <thead> 
+                                    <th> </th> 
+                                </thead>
+                            </table>
+                        </div>
+                      
                     </div>
                 </div>
             </div>
