@@ -15,22 +15,6 @@ def ride_detail(request, ride):
     details = json.loads(ride[1:-1])['fields']
     driver_pk = details['driver']
     vehicle_pk = details['car']
-<<<<<<< HEAD
-    return JsonResponse({'ok':True, 'driver': 'David Amin', 'vMake': 'Chevy', 'vModel': 'Trailblazer', 'leave': details['leave_time'], 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
-
-def home_detail(request):
-    r = requests.get('http://models-api:8000/models/ride_list')
-    ok = json.loads(r.text)['ok']
-    if(ok != True):
-        return JsonResponse({'ok':False})
-    ride = json.loads(r.text)['car']
-    details = json.loads(ride[1:-1])['fields']
-    driver_pk = details['driver']
-    vehicle_pk = details['car']
-    return JsonResponse({'ok':True, 'driver': 'David Amin', 'vMake': 'Chevy', 'vModel': 'Trailblazer', 'leave': details['leave_time'], 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
-
-    
-=======
     r2 = requests.get('http://models-api:8000/models/get_user/' + str(driver_pk))
     ok = json.loads(r2.text)['ok']
     if(ok != True):
@@ -50,4 +34,14 @@ def home_detail(request):
         vMake = car_details['make']
         vModel = car_details['model']
     return JsonResponse({'ok':True, 'driver': driver, 'vMake': vMake, 'vModel': vModel, 'leave': details['leave_time'], 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
->>>>>>> 8290b593cb74fdc52743498fdce973a8693c5dba
+
+def home_detail(request):
+    r = requests.get('http://models-api:8000/models/ride_list')
+    ok = json.loads(r.text)['ok']
+    if(ok != True):
+        return JsonResponse({'ok':False})
+    ride = json.loads(r.text)['car']
+    details = json.loads(ride[1:-1])['fields']
+    driver_pk = details['driver']
+    vehicle_pk = details['car']
+    return JsonResponse({'ok':True, 'driver': 'David Amin', 'vMake': 'Chevy', 'vModel': 'Trailblazer', 'leave': details['leave_time'], 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
