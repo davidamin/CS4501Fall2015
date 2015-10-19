@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link rel="stylesheet" href="login.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="login.js"></script>
+    </head>
+    
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid"> 
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand">Hoo's Ridin'</a>
+            </div>
+          </div>
+        </nav>
+        
+        <div id="content">
+            <h3 id="title" class="content-item"> Login </h3>
+            
+            <div id="loginForm" class="content-item">
+                <div id="alert1thing" style="display: none">
+                    <div class="alert alert-dismissible alert-danger">
+                      <p id="alert1"></p>
+                    </div>
+                </div>
+
+                <label> Username: </label> <input type="text" id="user" onkeydown="if (event.keyCode == 13) { login();}"> <br> <br>
+                <label> Password: </label> <input type="password" id="password" onkeydown="if (event.keyCode == 13) { login();}"> <br> <br>
+                <button onclick="login()" class="btn btn-info"> Log In </button> <p></p>
+                <button onclick="aButton()" class="btn btn-primary"> Create New Account </button> <label> </label>
+                <button onclick="bButton()" class="btn btn-default"> Forgot Password? </button>
+            </div>
+            
+            <div id="createForm" class="content-item hidden">
+                <div id="alert3thing" style="display: none">
+                    <div class="alert alert-dismissible alert-danger">
+                      <p id="alert3"></p>
+                    </div>
+                </div>
+                <label> New Username: </label> <input type="text" id="newUser" onkeydown="if (event.keyCode == 13) { create();}"> <br> <br>
+                <label> First Name: </label> <input type="text" id="first" onkeydown="if (event.keyCode == 13) { create();}"> <br> <br>
+                <label> Last Name: </label> <input type="text" id="last" onkeydown="if (event.keyCode == 13) { create();}"> <br> <br>
+                <label> New Password: </label> <input type="password" id="newPassword" onkeydown="if (event.keyCode == 13) { create();}"> <br> <br>
+                <label> Confirm New Password: </label> <input type="password" id="confirmPassword" onkeydown="if (event.keyCode == 13) { create();}"> <br> <br>
+                <label> Email Address: </label> <input type="text" id="email" onkeydown="if (event.keyCode == 13) { create();}"> <br> <br>
+                <button type="button" onclick="create()" class="btn btn-default"> Create </button> <label> </label>
+                <button id ="aButton" value="createNew" onclick="cButton()" class="btn btn-primary"> Back to Login </button>
+            </div>
+        </div>
+	</body>
+</html>	
