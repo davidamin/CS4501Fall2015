@@ -15,11 +15,11 @@ class Vehicle(models.Model):
     accomodations = models.CharField(max_length = 30, blank=True)
 
 class User(models.Model):
-    #username = models.CharField(max_length=24, unique=True)
+    username = models.CharField(max_length=24, unique=True)
     first = models.CharField(max_length=20)
     last = models.CharField(max_length=20)
     email = models.CharField(max_length=50)
-    password = models.CharField(max_length=18)
+    password = models.CharField(max_length=256)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=2)
     phone_number = models.CharField(max_length=10)

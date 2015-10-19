@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.contrib.auth.hashers import make_password, check_password
 
 from first import models
 from django.core import serializers
 from datetime import datetime
+
+import os
+import base64
 
 def index(request):
     return HttpResponse("Hello World!")
@@ -98,8 +102,8 @@ def add_user(request):
         new_user.last = request.POST['last']
     if 'email' in request.POST:
         new_user.email = request.POST['email']
-    if 'password' in request.POST: #TODO: hash the pw before saving
-        new_user.password = request.POST['password']
+    if 'password' in request.POST:
+        new_user.password = make_password(request.POST['password'])
     if 'city' in request.POST:
         new_user.city = request.POST['city']
     if 'state' in request.POST:
@@ -153,7 +157,7 @@ def update_password(request, user):
     except:
         return JsonResponse({'ok': False, 'error': 'Failed to find user id ' + user})
     if 'password' in request.POST:
-        recover_user.password = request.POST['password']
+        recover_user.password = make_password(request.POST['password'])
     return JsonResponse({'ok':True, 'log': 'Password Changed'})
 
 def get_user(request, user):
@@ -178,19 +182,21 @@ def deactivate_user(request, user):
         deactivate_user.save()
     return JsonResponse({'ok':True, 'log': 'User Account Deactivated'})
 
-def login(request): 
+def check_auth(request): 
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
     username = request.POST['username']
-    password = request.POST['password'] #TODO: hashing
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        if user.active:
+    password = request.POST['password']
+    hashed_pass = models.User.objects.get(username=username).password
+    #try:
+    #    hashed_pass = models.User.objects.get(username=username).password
+    #except:
+    #    return JsonResponse({'ok': False, 'error': 'User account was not found'})
+    check = check_password(password,hashed_pass)
+    if check:
             return JsonResponse({'ok': True, 'log': 'Login successful'})
-        else: 
-            return JsonResponse({'ok': False, 'error': 'User account was deactivated'})
     else:
-        return JsonResponse({'ok': False, 'error': 'Username or password was incorrect'})
+        return JsonResponse({'ok': False, 'error': 'Password was incorrect'})
 
 def create_ride(request):
     if request.method != 'POST':
