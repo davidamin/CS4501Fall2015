@@ -47,3 +47,8 @@ class Ride(models.Model):
     comments = models.CharField(max_length = 300, blank = True)
     max_miles_offroute = models.FloatField(blank = True)
     active = models.BooleanField(default = True)
+
+class AuthTable(models.Model):
+    authenticator = models.CharField(max_length = 255, primary_key=True)
+    user_id = models.ForeignKey(User)
+    date_created = models.DateTimeField()

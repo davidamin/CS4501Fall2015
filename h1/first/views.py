@@ -182,21 +182,35 @@ def deactivate_user(request, user):
         deactivate_user.save()
     return JsonResponse({'ok':True, 'log': 'User Account Deactivated'})
 
-def check_auth(request): 
+def get_auth(request): 
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
     username = request.POST['username']
     password = request.POST['password']
-    hashed_pass = models.User.objects.get(username=username).password
-    #try:
-    #    hashed_pass = models.User.objects.get(username=username).password
-    #except:
-    #    return JsonResponse({'ok': False, 'error': 'User account was not found'})
+    try:
+        this_user = models.User.objects.get(username=username)
+        hashed_pass = this_user.password
+    except:
+        return JsonResponse({'ok': False, 'error': 'User account was not found'})
     check = check_password(password,hashed_pass)
     if check:
-            return JsonResponse({'ok': True, 'log': 'Login successful'})
+        models.AuthTable.objects.filter(user_id=this_user).delete()
+        new_auth = models.AuthTable()
+        new_auth.user_id = this_user
+        new_auth.date_created = datetime.now()
+        new_auth.authenticator = base64.b64encode(os.urandom(32)).decode('utf-8')
+        new_auth.save()
+        return JsonResponse({'ok': True, 'log': 'Login successful', 'auth': new_auth.authenticator})
     else:
         return JsonResponse({'ok': False, 'error': 'Password was incorrect'})
+
+def check_auth(auth):
+    try:
+        this_auth = models.AuthTable.objects.get(authenticator=auth)
+    except:
+        return False
+    #Should we return the user and stuff too? Or just let that one be?
+    return True
 
 def create_ride(request):
     if request.method != 'POST':
