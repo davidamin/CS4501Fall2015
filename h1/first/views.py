@@ -212,6 +212,24 @@ def check_auth(auth):
     #Should we return the user and stuff too? Or just let that one be?
     return True
 
+def is_auth(request, auth):
+    if request.method != 'GET':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be get'})
+    if check_auth(auth):
+        return JsonResponse({'ok': True})
+    else:
+        return JsonResponse({'ok': False, 'error': 'Invalid authenticator'})
+
+def revoke_auth(request, auth):
+    if request.method != 'GET':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be get'})
+    try:
+        this_auth = models.AuthTable.objects.get(authenticator=auth)
+    except:
+        return JsonResponse({'ok': True, 'log': 'Auth not found'})
+    this_auth.delete()
+    return JsonResponse({'ok': True, 'log': 'Auth removed'})
+
 def create_ride(request):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
