@@ -226,6 +226,7 @@ def is_auth(request):
 def revoke_auth(request):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+    auth = request.POST['auth']
     try:
         this_auth = models.AuthTable.objects.get(authenticator=auth)
     except:
