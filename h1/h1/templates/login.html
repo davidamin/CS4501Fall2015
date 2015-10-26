@@ -25,36 +25,35 @@
         </nav>
         
         <div id="content">
-            <h3 id="title" class="content-item"> Login </h3>
-            
-            <div id="loginForm" class="content-item">
+            <div id="login-form" class="content-page">
+                <h3 id="title" class="content-item"> Login </h3>
                 <div id="alert1thing" style="display: none">
                     <div class="alert alert-dismissible alert-danger">
                       <p id="alert1"></p>
                     </div>
                 </div>
 
-                <label> Username: </label> <input type="text" id="user" onkeydown="if (event.keyCode == 13) { login();}"> <br> <br>
-                <label> Password: </label> <input type="password" id="password" onkeydown="if (event.keyCode == 13) { login();}"> <br> <br>
-                <button onclick="login()" class="btn btn-info"> Log In </button> <p></p>
-                <button onclick="aButton()" class="btn btn-primary"> Create New Account </button> <label> </label>
-                <button onclick="bButton()" class="btn btn-default"> Forgot Password? </button>
+                <label> Username: </label> <input type="text" id="user"> <br> <br>
+                <label> Password: </label> <input type="password" id="password"> <br> <br>
+                <button class="btn btn-info"> Log In </button> <p></p>
+                <button class="btn btn-primary" id="create-account-btn"> Create New Account </button> <label> </label>
+                <!-- <button class="btn btn-default" id="forgot-password-btn"> Forgot Password? </button> -->
             </div>
             
-            <div id="createForm" class="content-item hidden">
+            <div id="create-form" class="content-page hidden">
                 <div id="alert3thing" style="display: none">
                     <div class="alert alert-dismissible alert-danger">
                       <p id="alert3"></p>
                     </div>
                 </div>
-                <label> New Username: </label> <input type="text" id="newUser" onkeydown="if (event.keyCode == 13) { create();}"> <br> <br>
-                <label> First Name: </label> <input type="text" id="first" onkeydown="if (event.keyCode == 13) { create();}"> <br> <br>
-                <label> Last Name: </label> <input type="text" id="last" onkeydown="if (event.keyCode == 13) { create();}"> <br> <br>
-                <label> New Password: </label> <input type="password" id="newPassword" onkeydown="if (event.keyCode == 13) { create();}"> <br> <br>
-                <label> Confirm New Password: </label> <input type="password" id="confirmPassword" onkeydown="if (event.keyCode == 13) { create();}"> <br> <br>
-                <label> Email Address: </label> <input type="text" id="email" onkeydown="if (event.keyCode == 13) { create();}"> <br> <br>
-                <button type="button" onclick="create()" class="btn btn-default"> Create </button> <label> </label>
-                <button id ="aButton" value="createNew" onclick="cButton()" class="btn btn-primary"> Back to Login </button>
+                <label> New Username: </label> <input type="text" id="newUser"> <br> <br>
+                <label> First Name: </label> <input type="text" id="first"> <br> <br>
+                <label> Last Name: </label> <input type="text" id="last"> <br> <br>
+                <label> New Password: </label> <input type="password" id="newPassword"> <br> <br>
+                <label> Confirm New Password: </label> <input type="password" id="confirmPassword"> <br> <br>
+                <label> Email Address: </label> <input type="text" id="email"> <br> <br>
+                <button type="button" class="btn btn-default"> Create </button> <label> </label>
+                <button id ="back-to-login-btn" value="createNew" class="btn btn-primary"> Back to Login </button>
             </div>
         </div>
 	</body>
