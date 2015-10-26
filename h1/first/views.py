@@ -109,7 +109,7 @@ def add_user(request):
     if 'state' in request.POST:
         new_user.state = request.POST['state']
     if 'phone' in request.POST:
-        new_user.phone = request.POST['phone']
+        new_user.phone_number = request.POST['phone']
     if 'payment_type' in request.POST:
         new_user.payment_type = request.POST['payment_type']
     if 'gender' in request.POST:
