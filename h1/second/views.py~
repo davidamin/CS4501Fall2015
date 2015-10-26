@@ -34,3 +34,31 @@ def ride_detail(request, ride):
         vMake = car_details['make']
         vModel = car_details['model']
     return JsonResponse({'ok':True, 'driver': driver, 'vMake': vMake, 'vModel': vModel, 'leave': details['leave_time'], 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
+
+def home_detail(request):
+    r = requests.get('http://models-api:8000/models/ride_list')
+    ok = json.loads(r.text)['ok']
+    if(ok != True):
+        return JsonResponse({'ok':False})
+    ride = json.loads(r.text)['car']
+    details = json.loads(ride[1:-1])['fields']
+    driver_pk = details['driver']
+    vehicle_pk = details['car']
+    return JsonResponse({'ok':True, 'driver': 'David Amin', 'vMake': 'Chevy', 'vModel': 'Trailblazer', 'leave': details['leave_time'], 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
+
+def create_user(request):
+    r = requests.post('http://models-api:8000/models/create_user/', data=request.POST)
+    ok = json.loads(r.text)['ok']
+    if ok:
+        userpass = {}
+        userpass['username'] = request.POST['username']
+        userpass['password'] = request.POST['password']
+        r2 = requests.post('http://models-api:8000/models/get_auth/', data=userpass)
+        d2 = json.loads(r2.text)['ok']
+        if d2:
+            auth = json.loads(r2.text)['auth']
+        else:
+            return JsonResponse({'ok':False, 'error': 'Encountered error while authenticating'})
+    else:
+        return JsonResponse({'ok':False, 'error': 'Encountered error while creating user'})
+    return JsonResponse({'ok': True, 'auth': auth})

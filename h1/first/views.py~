@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import make_password, check_password
 
 from first import models
 from django.core import serializers
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import os
 import base64
@@ -220,8 +220,19 @@ def is_auth(request, auth):
     else:
         return JsonResponse({'ok': False, 'error': 'Invalid authenticator'})
 
-def revoke_auth(request):
-    
+def revoke_auth(request, auth):
+    if request.method != 'GET':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be get'})
+    try:
+        this_auth = models.AuthTable.objects.get(authenticator=auth)
+    except:
+        return JsonResponse({'ok': True, 'log': 'Auth not found'})
+    this_auth.delete()
+    time_limit = datetme.now() - timedelta(hours=6)
+    old_auths = models.AuthTable.objects.filter(date_created__lt=time_limit)
+    for a in old_auths:
+        a.delete()
+    return JsonResponse({'ok': True, 'log': 'Auth removed'})
 
 def create_ride(request):
     if request.method != 'POST':

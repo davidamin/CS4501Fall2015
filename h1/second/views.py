@@ -45,3 +45,20 @@ def home_detail(request):
     driver_pk = details['driver']
     vehicle_pk = details['car']
     return JsonResponse({'ok':True, 'driver': 'David Amin', 'vMake': 'Chevy', 'vModel': 'Trailblazer', 'leave': details['leave_time'], 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
+
+def create_user(request):
+    r = requests.post('http://models-api:8000/models/create_user/', data=request.POST)
+    ok = json.loads(r.text)['ok']
+    if ok:
+        userpass = {}
+        userpass['username'] = request.POST['username']
+        userpass['password'] = request.POST['password']
+        r2 = requests.post('http://models-api:8000/models/get_auth/', data=userpass)
+        d2 = json.loads(r2.text)['ok']
+        if d2:
+            auth = json.loads(r2.text)['auth']
+        else:
+            return JsonResponse({'ok':False, 'error': 'Encountered error while authenticating'})
+    else:
+        return JsonResponse({'ok':False, 'error': 'Encountered error while creating user'})
+    return JsonResponse({'ok': True, 'auth': auth, 'log': 'User Created'})

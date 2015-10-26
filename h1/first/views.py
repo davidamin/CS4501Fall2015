@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import make_password, check_password
 
 from first import models
 from django.core import serializers
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import os
 import base64
@@ -228,6 +228,8 @@ def revoke_auth(request, auth):
     except:
         return JsonResponse({'ok': True, 'log': 'Auth not found'})
     this_auth.delete()
+    time_limit = datetme.now() - timedelta(hours=6)
+    models.AuthTable.objects.filter(date_created__lt=time_limit).delete()
     return JsonResponse({'ok': True, 'log': 'Auth removed'})
 
 def create_ride(request):
