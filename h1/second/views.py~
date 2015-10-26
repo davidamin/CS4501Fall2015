@@ -7,6 +7,8 @@ import requests
 # Create your views here.
 
 def ride_detail(request, ride):
+    if request.method != 'GET':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be GET'})
     r = requests.get('http://models-api:8000/models/get_ride/' + ride)
     ok = json.loads(r.text)['ok']
     if(ok != True):
@@ -36,6 +38,8 @@ def ride_detail(request, ride):
     return JsonResponse({'ok':True, 'driver': driver, 'vMake': vMake, 'vModel': vModel, 'leave': details['leave_time'], 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
 
 def home_detail(request):
+    if request.method != 'GET':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be GET'})
     r = requests.get('http://models-api:8000/models/ride_list')
     ok = json.loads(r.text)['ok']
     if(ok != True):
@@ -47,6 +51,8 @@ def home_detail(request):
     return JsonResponse({'ok':True, 'driver': 'David Amin', 'vMake': 'Chevy', 'vModel': 'Trailblazer', 'leave': details['leave_time'], 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
 
 def create_user(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
     r = requests.post('http://models-api:8000/models/create_user/', data=request.POST)
     ok = json.loads(r.text)['ok']
     if ok:
@@ -58,7 +64,27 @@ def create_user(request):
         if d2:
             auth = json.loads(r2.text)['auth']
         else:
-            return JsonResponse({'ok':False, 'error': 'Encountered error while authenticating'})
+            return JsonResponse({'ok': False, 'error': 'Encountered error while authenticating'})
     else:
-        return JsonResponse({'ok':False, 'error': 'Encountered error while creating user'})
-    return JsonResponse({'ok': True, 'auth': auth})
+        return JsonResponse({'ok': False, 'error': 'Encountered error while creating user'})
+    return JsonResponse({'ok': True, 'auth': auth, 'log': 'User Created'})
+
+def login(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+    r = requests.post('http://models-api:8000/models/get_auth/', data=request.POST)
+    ok = json.loads(r2.text)['ok']
+    if ok:
+        return JsonResponse({'ok': True, 'auth': json.loads(r2.text)['auth']})
+    else:
+        return JsonResponse({'ok': False, 'error': 'Encountered error while authenticating'})
+
+def logout(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+    r = requests.post('http://models-api:8000/models/revoke_auth/', data=request.POST)
+    ok = json.loads(r2.text)['ok']
+    if ok:
+        return JsonResponse({'ok': True, 'auth': json.loads(r2.text)['auth']})
+    else:
+        return JsonResponse({'ok': False, 'error': 'Encountered error while authenticating'})
