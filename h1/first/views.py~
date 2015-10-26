@@ -212,9 +212,12 @@ def check_auth(auth):
     #Should we return the user and stuff too? Or just let that one be?
     return True
 
-def is_auth(request, auth):
-    if request.method != 'GET':
-        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be get'})
+def is_auth(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+    auth = request.POST['auth']
+    time_limit = datetime.now() - timedelta(hours=6)
+    models.AuthTable.objects.filter(date_created__lt=time_limit).delete()
     if check_auth(auth):
         return JsonResponse({'ok': True})
     else:
@@ -222,13 +225,14 @@ def is_auth(request, auth):
 
 def revoke_auth(request):
     if request.method != 'POST':
-        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be get'})
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+    auth = request.POST['auth']
     try:
         this_auth = models.AuthTable.objects.get(authenticator=auth)
     except:
         return JsonResponse({'ok': True, 'log': 'Auth not found'})
     this_auth.delete()
-    time_limit = datetme.now() - timedelta(hours=6)
+    time_limit = datetime.now() - timedelta(hours=6)
     models.AuthTable.objects.filter(date_created__lt=time_limit).delete()
     return JsonResponse({'ok': True, 'log': 'Auth removed'})
 
