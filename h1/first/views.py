@@ -214,7 +214,7 @@ def check_auth(auth):
 
 def is_auth(request, auth):
     if request.method != 'GET':
-        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be get'})
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be GET'})
     this_auth.delete()
     time_limit = datetme.now() - timedelta(hours=6)
     if check_auth(auth):
@@ -224,7 +224,7 @@ def is_auth(request, auth):
 
 def revoke_auth(request):
     if request.method != 'POST':
-        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be get'})
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
     try:
         this_auth = models.AuthTable.objects.get(authenticator=auth)
     except:
