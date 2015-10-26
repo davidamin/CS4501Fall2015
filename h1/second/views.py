@@ -88,3 +88,14 @@ def logout(request):
         return JsonResponse({'ok': True, 'log': 'Authenticator revoked'})
     else:
         return JsonResponse({'ok': False, 'error': 'Encountered error while removing auth'})
+
+def add_new_ride(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+    auth = request.POST['auth']
+    r = requests.post('http://models-api:8000/models/is_auth/', data={'auth':auth})
+    ok = json.loads(r.text)['ok']
+    if ok:
+        r = requests.post('http://models-api:8000/models/create_ride/', data=request.POST)
+    else:
+        return
