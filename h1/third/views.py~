@@ -1,8 +1,10 @@
 from django.shortcuts import render,render_to_response, get_object_or_404
 from django.template import Context, RequestContext, loader
 from django.template.loader import get_template
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
+from django import forms
+from .forms import LoginForm
 import json
 import requests
 
@@ -15,7 +17,16 @@ def custom_processor(request):
     }
 
 def view_normal(request):
-    return render_to_response("main.html", {"unique_message": "Specific to a template"},
+    return render_to_response("main.html", {"ID": "1",
+	"Driver":"Elon Musk",
+	"SPlace": "Charlottesville, VA",
+	"EPlace": "Fairfax, VA",
+	"DTime": "9:00am",
+	"ETA": "11:00am",
+	"DetourMiles": "20 Mi",
+	"Seats": "3",
+	"SeatCost": "$10",
+	},
     context_instance=RequestContext(request, processors=[custom_processor]))
 
 def ride_detail(request, ride):
@@ -29,3 +40,34 @@ def ride_detail(request, ride):
         "Destination": json.loads(r.text)['Destination'],
         },
     context_instance=RequestContext(request))
+
+def login(request):
+	if request.method == 'GET':
+		login_form = LoginForm()
+		return render_to_response("login.html", 
+			{'login_form':login_form},
+			context_instance=RequestContext(request))
+	else:
+		login_form = LoginForm(request.POST)
+		if not login_form.is_valid():
+			return render_to_response("login.html", 
+			{'login_form':login_form, 'Response': "Invalid Input. Please try again"},
+			context_instance=RequestContext(request))
+		resp = requests.post('http://exp-api:8000/exp/login/', data=request.POST)
+		ok = json.loads(resp.text)['ok']
+		if not ok:
+			return render_to_response("login.html",
+			{'login_form':login_form, 'Response': "Incorrect Username/Password combination. Please try again."},
+			context_instance=RequestContext(request))
+		authenticator = json.loads(resp.text)['auth']
+		response = HttpResponseRedirect('/')
+		response.set_cookie("auth", authenticator)
+		return response
+
+def logout(request):
+	auth = request.COOKIES.get('auth')
+	if not auth:
+		return HttpResponseRedirect('/v1/login/')
+	resp = requests.post('http://exp-api:8000/exp/logout/', data=request.POST)
+	ok = json.loads(resp.text)['ok']
+	return HttpResponseRedirect('/')
