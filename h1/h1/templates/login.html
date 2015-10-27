@@ -35,7 +35,9 @@
 		<form id="login_form" method="post" action="/v1/login/" enctype="multipart/form-data">
 		{% csrf_token %}
 		{{ Response }}
-		{{ login_form.as_p }}
+        <table>
+		{{ login_form.as_table }}
+        </table>
                 <button type="submit" value="submit" class="btn btn-info"> Log In </button> <p></p>
 		</form>
                 <button class="btn btn-primary" id="create-account-btn"> Create New Account </button> <label> </label>

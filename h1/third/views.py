@@ -4,7 +4,7 @@ from django.template.loader import get_template
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 from django import forms
-from .forms import LoginForm
+from .forms import LoginForm, CreateVehicle 
 import json
 import requests
 
@@ -42,6 +42,9 @@ def ride_detail(request, ride):
     context_instance=RequestContext(request))
 
 def login(request):
+	auth = request.COOKIES.get('auth')
+	if auth:
+		return HttpResponseRedirect('/')
 	if request.method == 'GET':
 		login_form = LoginForm()
 		return render_to_response("login.html", 
@@ -70,4 +73,20 @@ def logout(request):
 		return HttpResponseRedirect('/v1/login/')
 	resp = requests.post('http://exp-api:8000/exp/logout/', data=request.POST)
 	ok = json.loads(resp.text)['ok']
-	return HttpResponseRedirect('/')
+	response = HttpResponseRedirect('/')
+	response.delete_cookie('auth')
+	return response
+
+def create_vehicle(request):
+	auth = request.COOKIES.get('auth')
+	if not auth:
+		return HttpResponseRedirect('/v1/login/')
+	if request.method == 'GET':
+		creation_form = CreateVehicle()
+		return render_to_response("create_vehicle.html",
+			{'creation_form': creation_form},
+			context_instance=RequestContext(request))
+	else:
+		creation_form = CreateVehicle(request.POST)
+
+
