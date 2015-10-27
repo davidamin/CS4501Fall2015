@@ -53,8 +53,6 @@ def login(request):
 			return render_to_response("login.html", 
 			{'login_form':login_form, 'Response': "Invalid Input. Please try again"},
 			context_instance=RequestContext(request))
-		username = login_form.cleaned_data['username']
-		password = login_form.cleaned_data['password']
 		resp = requests.post('http://exp-api:8000/exp/login/', data=request.POST)
 		ok = json.loads(resp.text)['ok']
 		if not ok:
@@ -65,4 +63,11 @@ def login(request):
 		response = HttpResponseRedirect('/')
 		response.set_cookie("auth", authenticator)
 		return response
-			
+
+def logout(request):
+	auth = request.COOKIES.get('auth')
+	if not auth:
+		return HttpResponseRedirect('/v1/login/')
+	resp = requests.post('http://exp-api:8000/exp/logout/', data=request.POST)
+	ok = json.loads(resp.text)['ok']
+	return HttpResponseRedirect('/')
