@@ -3,6 +3,8 @@ from django.template import Context, RequestContext, loader
 from django.template.loader import get_template
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django import forms
+from .forms import LoginForm
 import json
 import requests
 
@@ -38,3 +40,28 @@ def ride_detail(request, ride):
         "Destination": json.loads(r.text)['Destination'],
         },
     context_instance=RequestContext(request))
+
+def login(request):
+	if request.method == 'GET':
+		login_form = LoginForm()
+		return render_to_response("login.html", 
+			{'login_form':login_form},
+			context_instance=RequestContext(request))
+	else:
+		login_form = LoginForm(request.POST)
+		if not login_form.is_valid():
+			return render_to_response("login.html", 
+			{'login_form':login_form, 'input': False},
+			context_instance=RequestContext(request))
+		username = login_form.cleaned_data['username']
+		password = login_form.cleaned_data['password']
+		resp = requests.post('http://exp-api:8000/login/', data=request.POST)
+		if not json.loads(resp.text)['ok']:
+			return render_to_response("login.html",
+			{'login_form':login_form, 'valid': False},
+			context_instance=RequestContext(request))
+		authenticator = json.loads(resp.text)['auth']['auth']
+		response = HttpResponseRedirect('/')
+		response.set_cooke("auth", authenticator)
+		return response
+			

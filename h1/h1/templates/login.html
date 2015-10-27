@@ -32,10 +32,11 @@
                       <p id="alert1"></p>
                     </div>
                 </div>
-
-                <label> Username: </label> <input type="text" id="user"> <br> <br>
-                <label> Password: </label> <input type="password" id="password"> <br> <br>
-                <button class="btn btn-info"> Log In </button> <p></p>
+		<form id="login_form" method="post" action="/v1/login/" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ login_form.as_p }}
+                <button type="submit" value="submit" class="btn btn-info"> Log In </button> <p></p>
+		</form>
                 <button class="btn btn-primary" id="create-account-btn"> Create New Account </button> <label> </label>
                 <!-- <button class="btn btn-default" id="forgot-password-btn"> Forgot Password? </button> -->
             </div>
