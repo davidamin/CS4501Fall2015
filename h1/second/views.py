@@ -72,7 +72,7 @@ def create_user(request):
 def login(request):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
-    r = requests.post('http://models-api:8000/models/get_auth/', data=request.POST)
+    r = requests.post('http://models-api:8000/models/get_auth', data=request.POST)
     ok = json.loads(r.text)['ok']
     if ok:
         return JsonResponse({'ok': True, 'auth': json.loads(r.text)['auth']})
