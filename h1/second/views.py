@@ -59,7 +59,7 @@ def create_user(request):
         userpass = {}
         userpass['username'] = request.POST['username']
         userpass['password'] = request.POST['password']
-        r2 = requests.post('http://models-api:8000/models/get_auth/', data=userpass)
+        r2 = requests.post('http://models-api:8000/models/get_auth', data=userpass)
         d2 = json.loads(r2.text)['ok']
         if d2:
             auth = json.loads(r2.text)['auth']
