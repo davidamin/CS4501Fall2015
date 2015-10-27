@@ -82,7 +82,7 @@ def login(request):
 def logout(request):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
-    r = requests.post('http://models-api:8000/models/revoke_auth/', data=request.POST)
+    r = requests.post('http://models-api:8000/models/revoke_auth', data=request.POST)
     ok = json.loads(r.text)['ok']
     if ok:
         return JsonResponse({'ok': True, 'log': 'Authenticator revoked'})
