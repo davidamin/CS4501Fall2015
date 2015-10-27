@@ -93,7 +93,7 @@ def add_new_ride(request):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
     auth = request.POST['auth']
-    r = requests.post('http://models-api:8000/models/is_auth/', data={'auth':auth})
+    r = requests.post('http://models-api:8000/models/is_auth', data={'auth':auth})
     ok = json.loads(r.text)['ok']
     if ok:
         r2 = requests.post('http://models-api:8000/models/create_ride/', data=request.POST)
@@ -104,3 +104,19 @@ def add_new_ride(request):
             return JsonResponse({'ok': False, 'error': 'Failed to create ride'})
     else:
         return JsonResponse({'ok': False, 'error': 'Invalid authentication to make ride'})
+
+def add_new_vehicle(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+    auth = request.POST['auth']
+    auth_req = requests.post('http://models-api:8000/models/is_auth', data={'auth':auth})
+    ok = json.loads(auth_req.text)['ok']
+    if ok:
+        resp = requests.post('http://models-api:8000/models/add_vehicle', data=request.POST)
+        created = json.loads(resp.text)['ok']
+        if created:
+            return JsonResponse({'ok': True, 'log': 'Added vehicle'})
+        else:
+            return JsonResponse({'ok': False, 'error': 'Failed to create vehicle'})
+    else:
+        return JsonResponse({'ok': False, 'error': 'Invalid authentication to make vehicle'})
