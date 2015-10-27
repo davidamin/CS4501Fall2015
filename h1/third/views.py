@@ -55,8 +55,9 @@ def login(request):
 			context_instance=RequestContext(request))
 		username = login_form.cleaned_data['username']
 		password = login_form.cleaned_data['password']
-		resp = requests.post('http://exp-api:8000/login/', data=request.POST)
-		if not json.loads(resp.text)['ok']:
+		resp = requests.post('http://exp-api:8000/exp/login/', data=request.POST)
+		ok = json.loads(resp.text)['ok']
+		if not ok:
 			return render_to_response("login.html",
 			{'login_form':login_form, 'valid': False},
 			context_instance=RequestContext(request))
