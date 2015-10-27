@@ -1,7 +1,7 @@
 from django.shortcuts import render,render_to_response, get_object_or_404
 from django.template import Context, RequestContext, loader
 from django.template.loader import get_template
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 from django import forms
 from .forms import LoginForm
@@ -51,7 +51,7 @@ def login(request):
 		login_form = LoginForm(request.POST)
 		if not login_form.is_valid():
 			return render_to_response("login.html", 
-			{'login_form':login_form, 'input': False},
+			{'login_form':login_form, 'Response': "Invalid Input. Please try again"},
 			context_instance=RequestContext(request))
 		username = login_form.cleaned_data['username']
 		password = login_form.cleaned_data['password']
@@ -59,10 +59,10 @@ def login(request):
 		ok = json.loads(resp.text)['ok']
 		if not ok:
 			return render_to_response("login.html",
-			{'login_form':login_form, 'valid': False},
+			{'login_form':login_form, 'Response': "Incorrect Username/Password combination. Please try again."},
 			context_instance=RequestContext(request))
-		authenticator = json.loads(resp.text)['auth']['auth']
+		authenticator = json.loads(resp.text)['auth']
 		response = HttpResponseRedirect('/')
-		response.set_cooke("auth", authenticator)
+		response.set_cookie("auth", authenticator)
 		return response
 			
