@@ -68,6 +68,6 @@ def logout(request):
 	auth = request.COOKIES.get('auth')
 	if not auth:
 		return HttpResponseRedirect('/v1/login/')
-	resp = requests.post('http://exp-api:8000/exp/logout/', data=request.POST)
+	resp = requests.post('http://exp-api:8000/exp/logout/', data={'auth':auth})
 	ok = json.loads(resp.text)['ok']
 	return HttpResponseRedirect('/')
