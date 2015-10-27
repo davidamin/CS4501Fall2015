@@ -15,5 +15,5 @@ class CreateVehicle(forms.Form):
 	condition = forms.CharField(max_length = 100, label = "Condition")
 	accomodations = forms.CharField(max_length=30, label = "Special Accomodations")
 	road_assistance = forms.CharField(max_length=30, label = "Roadside-Assistance Coverage")
-	uninsured = forms.BooleanField(label = "Insured Driver")
+	uninsured = forms.BooleanField(label = "Insured Driver", required=False)
 	notes = forms.CharField(max_length = 500, label = "Notes")
