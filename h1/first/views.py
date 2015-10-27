@@ -10,6 +10,14 @@ from datetime import datetime, timedelta
 import os
 import base64
 
+import json
+
+def model_to_json(model):
+	data = serializers.serialize('json',[model,])
+	struct = json.loads(data)
+	data = json.dumps(struct[0])
+	return data
+
 def index(request):
     return HttpResponse("Hello World!")
 
@@ -261,8 +269,8 @@ def create_ride(request):
         
 def ride_list(request):
     rides = models.Ride.objects.all()
-    formatted = [str(ride.driver) + str(ride.make) + str(ride.model) + '\n' for ride in rides]
-    return JsonResponse(serializers.serialize("json", models.Vehicle.objects.all()),safe=False)
+    formatted = [model_to_json(ride) for ride in rides]
+    return JsonResponse({"ok": True, "ride": formatted})
     
 def update_ride(request, ride):
     if request.method != 'POST':
