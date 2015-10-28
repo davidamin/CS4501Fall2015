@@ -4,7 +4,7 @@ from django.template.loader import get_template
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 from django import forms
-from .forms import LoginForm, CreateVehicle 
+from .forms import LoginForm, CreateVehicle, CreateUser
 import json
 import requests
 
@@ -76,6 +76,31 @@ def logout(request):
 	response = HttpResponseRedirect('/')
 	response.delete_cookie('auth')
 	return response
+
+def create_user(request):
+	auth = request.COOKIES.get('auth')
+	if auth:
+		return HttpResponseRedirect('/')
+	if request.method == 'GET':
+		creation_form = CreateUser()
+		return render_to_response("create_user.html",
+			{'creation_form': creation_form},
+			context_instance=RequestContext(request))
+	else:
+		creation_form = CreateUser(request.POST)
+		if not creation_form.is_valid():
+			return render_to_response("create_user.html",
+				{'creation_form': creation_form, 'Response': "Invalid Input. Please try again."},
+				context_instance=RequestContext(request))
+		resp = requests.post('http://exp-api:8000/exp/create_user/', data=request.POST)
+		ok = json.loads(resp.text)['ok']
+		if not ok:
+			return render_to_response("create_user.html",
+				{'creation_form': creation_form, 'Response': "There was an error while attempting to create the user"},
+				context_instance=RequestContext(request))
+		return render_to_response("create_user.html",
+			{'creation_form': creation_form, 'Response': "User sucessfully created."},
+			context_instance=RequestContext(request))
 
 def create_vehicle(request):
 	auth = request.COOKIES.get('auth')
