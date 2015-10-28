@@ -31,7 +31,7 @@ class User(models.Model):
     age = models.IntegerField(blank=True)
     #university = models.CharField(max_length = 100, blank=True)
     #ratings???
-    vehicle = models.ForeignKey(Vehicle)
+    vehicle = models.ForeignKey(Vehicle, blank=True)
     active = models.BooleanField(default=True)
 
 class Ride(models.Model):
