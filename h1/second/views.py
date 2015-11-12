@@ -40,15 +40,21 @@ def ride_detail(request, ride):
 def home_detail(request):
     if request.method != 'GET':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be GET'})
-    r = requests.get('http://models-api:8000/models/ride_list')
+    r = requests.get('http://models-api:8000/models/all_rides')
     ok = json.loads(r.text)['ok']
     if(ok != True):
         return JsonResponse({'ok':False})
-    ride = json.loads(r.text)['car']
-    details = json.loads(ride[1:-1])['fields']
-    driver_pk = details['driver']
-    vehicle_pk = details['car']
-    return JsonResponse({'ok':True, 'driver': 'David Amin', 'vMake': 'Chevy', 'vModel': 'Trailblazer', 'leave': details['leave_time'], 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
+    ride = json.loads(r.text)['ride']
+    result_set = []
+    for r in ride:
+        details = json.loads(r[1:-1])['fields']
+        driver_pk = details['driver']
+        vehicle_pk = details['car']
+        req_driver = requests.get('http://models-api:8000/models/get_user/ ' + str(driver_pk))
+        req_vehicle = requests.get('http://models-api:8000/models/get_car/' + str(vehicle_pk))
+        resp_driver = json.loads(req_driver.text)
+        resp_vehicle = json.loads(req_vehicle.text)
+    return JsonResponse({'ok':True, 'driver': resp_driver["first"], 'vMake': resp_vehicle["make"], 'vModel':resp_vehicle["model"], 'leave': details['leave_time'], 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
 
 def create_user(request):
     if request.method != 'POST':
