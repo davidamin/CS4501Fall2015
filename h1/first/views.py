@@ -269,8 +269,8 @@ def create_ride(request):
         
 def ride_list(request):
     rides = models.Ride.objects.all()
-    formatted = [str(ride.driver) + str(ride.make) + str(ride.model) + '\n' for ride in rides]
-    return JsonResponse(serializers.serialize("json", models.Vehicle.objects.all()),safe=False)
+    formatted = [model_to_json(ride) for ride in rides]
+    return JsonResponse({"ok": True, "ride": formatted})
     
 def update_ride(request, ride):
     if request.method != 'POST':

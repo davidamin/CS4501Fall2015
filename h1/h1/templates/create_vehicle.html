@@ -26,38 +26,20 @@
         
         <div id="content">
             <div id="login-form" class="content-page">
-                <h3 id="title" class="content-item"> Login </h3>
+                <h3 id="title" class="content-item"> Create Vehicle </h3>
                 <div id="alert1thing" style="display: none">
                     <div class="alert alert-dismissible alert-danger">
                       <p id="alert1"></p>
                     </div>
                 </div>
-		<form id="login_form" method="post" action="/v1/login/" enctype="multipart/form-data">
+		<form id="creation_form" method="post" action="/v1/create_vehicle/" enctype="multipart/form-data">
 		{% csrf_token %}
 		{{ Response }}
         <table>
-		{{ login_form.as_table }}
+		{{ creation_form.as_table }}
         </table>
-                <button type="submit" value="submit" class="btn btn-info"> Log In </button> <p></p>
+                <button type="submit" value="submit" class="btn btn-info"> Create Vehicle </button> <p></p>
 		</form>
-                <button class="btn btn-primary" id="create-account-btn"> Create New Account </button> <label> </label>
-                <!-- <button class="btn btn-default" id="forgot-password-btn"> Forgot Password? </button> -->
-            </div>
-            
-            <div id="create-form" class="content-page hidden">
-                <div id="alert3thing" style="display: none">
-                    <div class="alert alert-dismissible alert-danger">
-                      <p id="alert3"></p>
-                    </div>
-                </div>
-                <label> New Username: </label> <input type="text" id="newUser"> <br> <br>
-                <label> First Name: </label> <input type="text" id="first"> <br> <br>
-                <label> Last Name: </label> <input type="text" id="last"> <br> <br>
-                <label> New Password: </label> <input type="password" id="newPassword"> <br> <br>
-                <label> Confirm New Password: </label> <input type="password" id="confirmPassword"> <br> <br>
-                <label> Email Address: </label> <input type="text" id="email"> <br> <br>
-                <button type="button" class="btn btn-default"> Create </button> <label> </label>
-                <button id ="back-to-login-btn" value="createNew" class="btn btn-primary"> Back to Login </button>
             </div>
         </div>
 	</body>
