@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 import json
 import requests
+from kafka import SimpleProducer, KafkaClient
+from elasticsearch import Elasticsearch
 
 # Create your views here.
 
@@ -59,7 +61,7 @@ def home_detail(request):
 def create_user(request):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
-    r = requests.post('http://models-api:8000/models/create_user/', data=request.POST)
+    r = requests.post('http://models-api:8000/models/add_user', data=request.POST)
     ok = json.loads(r.text)['ok']
     if ok:
         userpass = {}
@@ -99,14 +101,39 @@ def add_new_ride(request):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
     auth = request.POST['auth']
-    r = requests.post('http://models-api:8000/models/is_auth/', data={'auth':auth})
+    r = requests.post('http://models-api:8000/models/is_auth', data={'auth':auth})
     ok = json.loads(r.text)['ok']
     if ok:
         r2 = requests.post('http://models-api:8000/models/create_ride/', data=request.POST)
         d2 = json.loads(r2.text)['ok']
         if d2:
+            kafka = KafkaClient('kafka:9092')
+            producer = SimpleProducer(kafka)
+            producer.send_messages(b'new-listings-topic', json.dumps(request.POST).encode('utf-8'))
             return JsonResponse({'ok': True, 'log': 'Created Ride'})
         else:
             return JsonResponse({'ok': False, 'error': 'Failed to create ride'})
     else:
         return JsonResponse({'ok': False, 'error': 'Invalid authentication to make ride'})
+
+def add_new_vehicle(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+    auth = request.POST['auth']
+    auth_req = requests.post('http://models-api:8000/models/is_auth', data={'auth':auth})
+    ok = json.loads(auth_req.text)['ok']
+    if ok:
+        resp = requests.post('http://models-api:8000/models/add_vehicle', data=request.POST)
+        created = json.loads(resp.text)['ok']
+        if created:
+            return JsonResponse({'ok': True, 'log': 'Added vehicle'})
+        else:
+            return JsonResponse({'ok': False, 'error': 'Failed to create vehicle'})
+    else:
+        return JsonResponse({'ok': False, 'error': 'Invalid authentication to make vehicle'})
+
+def search_result(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+    es = Elasticsearch(['es'])
+    es.search(index='listing_index', body={'query':{'query_string':{'query': request.POST['query']}}, 'size':10})

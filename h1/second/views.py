@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 import json
 import requests
+from kafka import SimpleProducer, KafkaClient
+from elasticsearch import Elasticsearch
 
 # Create your views here.
 
@@ -105,6 +107,10 @@ def add_new_ride(request):
         r2 = requests.post('http://models-api:8000/models/create_ride/', data=request.POST)
         d2 = json.loads(r2.text)['ok']
         if d2:
+            #Don't recreate these every time
+            kafka = KafkaClient('kafka:9092')
+            producer = SimpleProducer(kafka)
+            producer.send_messages(b'new-listings-topic', json.dumps(request.POST).encode('utf-8'))
             return JsonResponse({'ok': True, 'log': 'Created Ride'})
         else:
             return JsonResponse({'ok': False, 'error': 'Failed to create ride'})
@@ -126,3 +132,10 @@ def add_new_vehicle(request):
             return JsonResponse({'ok': False, 'error': 'Failed to create vehicle'})
     else:
         return JsonResponse({'ok': False, 'error': 'Invalid authentication to make vehicle'})
+
+def search_result(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+    #check for query in post, don't remake ES every time
+    es = Elasticsearch(['es'])
+    es.search(index='listing_index', body={'query':{'query_string':{'query': request.POST['query']}}, 'size':10})
