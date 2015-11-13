@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="main.js"></script>
     </head>
     
     <body>
@@ -27,16 +28,26 @@
         <!-- content view -->
         <div class="content">
             <div class="content-page container rides-list"> 
-                <div class="input-group">
-                    <input type="text" class="form-control" id="search-form" placeholder="Find a ride..." aria-label="...">
-                    <div class="input-group-btn">
-                        <button type="button" class="btn btn-default search-button">Search</button>
-                        <button type="button" class="btn btn-default" id="adv-search-button"> Advanced Search </button>
+                <div id="search">
+                    <div id="basic-input" class="input-group" role="group">
+                        <input type="text" class="form-control" id="search-form" placeholder="Find a ride by keywords..." aria-label="...">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default search-button" hint="">Search</button>
+                            <button type="button" class="btn btn-default" id="adv-search-button"> Advanced Search
+                                <span id="adv-search-span" class="glyphicon glyphicon-triangle-bottom"> </span> </button>
+                        </div>
+                    </div>
+                    <div id="adv-search-group" class="hidden" align="center"> 
+                        <form>
+                            <label>Driver</label><input type="text"> 
+                            <label>Start</label><input type="text">
+                            <label>Destination</label><input type="text"> <br>
+                            <label>Departure Time</label><input type="text">  
+                            <label>$</label><input type="text">
+                        </form>
                     </div>
                 </div>
-                <div class="input-group hidden" id="adv-search">
                 
-                </div>
                 <table class="table table-striped">
                     <thead>
                         <th> Ride ID </th>

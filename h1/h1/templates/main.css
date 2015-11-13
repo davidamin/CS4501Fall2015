@@ -29,6 +29,22 @@ body {
     box-shadow: 3px 5px 3px #555555;
 }
 
+#search {
+    border-width: 1px;
+    border-style: double;
+    border-color: #888888;
+    padding: 10px;
+}
+
+#adv-search-group {
+    margin-top: 25px;
+}
+
+#adv-search-group label {
+    padding-left: 15px;
+    padding-bottom: 5px;
+}
+
 .rides-list table {
     margin-top: 30px;
 }
