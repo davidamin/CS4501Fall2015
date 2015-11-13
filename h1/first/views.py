@@ -265,12 +265,12 @@ def create_ride(request):
     if 'driver' in request.POST:
         new_ride.driver = models.User.objects.get(pk=request.POST['driver'])
     new_ride.save()
-    return JsonResponse({'ok':True, 'log': 'Ride Created'})
+    return JsonResponse({'ok':True, 'log': 'Ride Created', 'id': new_ride.pk})
         
 def ride_list(request):
     rides = models.Ride.objects.all()
     formatted = [model_to_json(ride) for ride in rides]
-    return JsonResponse({"ok": True, "ride": formatted})
+    return JsonResponse({'ok': True, 'ride': formatted})
     
 def update_ride(request, ride):
     if request.method != 'POST':
