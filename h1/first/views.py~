@@ -175,7 +175,7 @@ def get_user(request, user):
         this_user = models.User.objects.get(pk=user)
     except:
         return JsonResponse({'ok': False, 'error': 'Failed to find user id ' + user})
-    ret_val = serializers.serialize('json',[this_user,])
+    ret_val = model_to_json(this_user)
     return JsonResponse({'ok': True,'user': ret_val})
         
 def deactivate_user(request, user):

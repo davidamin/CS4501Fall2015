@@ -62,7 +62,7 @@ def get_car(request, car):
         v = models.Vehicle.objects.get(pk=car)
     except models.Vehicle.DoesNotExist:
         return JsonResponse({'ok': False, 'error': 'Failed to find car id ' + car})
-    ret_val = serializers.serialize('json',[v,])
+    ret_val = model_to_json(v)
     return JsonResponse({'ok':True,'car':ret_val})
 
 def update_car(request, car):
@@ -175,7 +175,7 @@ def get_user(request, user):
         this_user = models.User.objects.get(pk=user)
     except:
         return JsonResponse({'ok': False, 'error': 'Failed to find user id ' + user})
-    ret_val = serializers.serialize('json',[this_user,])
+    ret_val = model_to_json(this_user)
     return JsonResponse({'ok': True,'user': ret_val})
         
 def deactivate_user(request, user):
