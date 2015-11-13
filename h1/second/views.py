@@ -104,8 +104,10 @@ def add_new_ride(request):
     r = requests.post('http://models-api:8000/models/is_auth', data={'auth':auth})
     ok = json.loads(r.text)['ok']
     if ok:
-        r2 = requests.post('http://models-api:8000/models/create_ride/', data=request.POST)
+        r2 = requests.post('http://models-api:8000/models/add_ride', data=request.POST)
         d2 = json.loads(r2.text)['ok']
+        ride_id = json.loads(r2.text)['id']
+        request.POST['id'] = ride_id
         if d2:
             #Don't recreate these every time
             kafka = KafkaClient('kafka:9092')
@@ -138,4 +140,5 @@ def search_result(request):
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
     #check for query in post, don't remake ES every time
     es = Elasticsearch(['es'])
-    es.search(index='listing_index', body={'query':{'query_string':{'query': request.POST['query']}}, 'size':10})
+    results = es.search(index='listing_index', body={'query':{'query_string':{'query': request.POST['query']}}, 'size':10})
+    return JsonResponse(results['hits'])
