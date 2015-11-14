@@ -17,16 +17,8 @@ def custom_processor(request):
     }
 
 def view_normal(request):
-    return render_to_response("main.html", {"ID": "1",
-	"Driver":"Elon Musk",
-	"SPlace": "Charlottesville, VA",
-	"EPlace": "Fairfax, VA",
-	"DTime": "9:00am",
-	"ETA": "11:00am",
-	"DetourMiles": "20 Mi",
-	"Seats": "3",
-	"SeatCost": "$10",
-	},
+    r = requests.get('http://exp-api:8000/exp/home_detail/')
+    return render_to_response("main.html",json.loads(r.text),
     context_instance=RequestContext(request, processors=[custom_processor]))
 
 def ride_detail(request, ride):
