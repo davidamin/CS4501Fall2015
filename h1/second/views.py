@@ -1,8 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
+from datetime import datetime
+from django.utils.dateparse import parse_datetime
 import json
 import requests
+from kafka import SimpleProducer, KafkaClient
+from elasticsearch import Elasticsearch
 
 # Create your views here.
 
@@ -47,14 +51,16 @@ def home_detail(request):
     ride = json.loads(r.text)['ride']
     result_set = []
     for r in ride:
-        details = json.loads(r[1:-1])['fields']
+        details = json.loads(r)['fields']
         driver_pk = details['driver']
         vehicle_pk = details['car']
-        req_driver = requests.get('http://models-api:8000/models/get_user/ ' + str(driver_pk))
+        req_driver = requests.get('http://models-api:8000/models/get_user/' + str(driver_pk))
         req_vehicle = requests.get('http://models-api:8000/models/get_car/' + str(vehicle_pk))
-        resp_driver = json.loads(req_driver.text)
-        resp_vehicle = json.loads(req_vehicle.text)
-    return JsonResponse({'ok':True, 'driver': resp_driver["first"], 'vMake': resp_vehicle["make"], 'vModel':resp_vehicle["model"], 'leave': details['leave_time'], 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
+        resp_driver = json.loads(json.loads(req_driver.text)['user'])['fields']            
+        resp_vehicle = json.loads(json.loads(req_vehicle.text)['car'])['fields']
+        leavetime = parse_datetime(details['leave_time'])
+        arrivetime = parse_datetime(details['arrive_time'])
+    return JsonResponse({'ok':True, 'driver': resp_driver["first"], 'vMake': resp_vehicle["make"], 'vModel':resp_vehicle["model"], 'leave': leavetime.strftime("%B %d %-I:%M:%S %p"), 'start': details['start'], 'arrive': arrivetime.strftime("%B %d %-I:%M:%S %p"), 'Destination': details['destination']})
 
 def create_user(request):
     if request.method != 'POST':
@@ -102,9 +108,15 @@ def add_new_ride(request):
     r = requests.post('http://models-api:8000/models/is_auth', data={'auth':auth})
     ok = json.loads(r.text)['ok']
     if ok:
-        r2 = requests.post('http://models-api:8000/models/create_ride/', data=request.POST)
+        r2 = requests.post('http://models-api:8000/models/add_ride', data=request.POST)
         d2 = json.loads(r2.text)['ok']
+        ride_id = json.loads(r2.text)['id']
+        request.POST['id'] = ride_id
         if d2:
+            #Don't recreate these every time
+            kafka = KafkaClient('kafka:9092')
+            producer = SimpleProducer(kafka)
+            producer.send_messages(b'new-listings-topic', json.dumps(request.POST).encode('utf-8'))
             return JsonResponse({'ok': True, 'log': 'Created Ride'})
         else:
             return JsonResponse({'ok': False, 'error': 'Failed to create ride'})
@@ -126,3 +138,11 @@ def add_new_vehicle(request):
             return JsonResponse({'ok': False, 'error': 'Failed to create vehicle'})
     else:
         return JsonResponse({'ok': False, 'error': 'Invalid authentication to make vehicle'})
+
+def search_result(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
+    #check for query in post, don't remake ES every time
+    es = Elasticsearch(['es'])
+    results = es.search(index='listing_index', body={'query':{'query_string':{'query': request.POST['query']}}, 'size':10})
+    return JsonResponse(results['hits'])
