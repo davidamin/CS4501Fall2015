@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
+from datetime import datetime
+from django.utils.dateparse import parse_datetime
 import json
 import requests
 from kafka import SimpleProducer, KafkaClient
@@ -49,14 +51,15 @@ def home_detail(request):
     ride = json.loads(r.text)['ride']
     result_set = []
     for r in ride:
-        details = json.loads(r[1:-1])['fields']
+        details = json.loads(r)['fields']
         driver_pk = details['driver']
         vehicle_pk = details['car']
-        req_driver = requests.get('http://models-api:8000/models/get_user/ ' + str(driver_pk))
+        req_driver = requests.get('http://models-api:8000/models/get_user/' + str(driver_pk))
         req_vehicle = requests.get('http://models-api:8000/models/get_car/' + str(vehicle_pk))
-        resp_driver = json.loads(req_driver.text)
-        resp_vehicle = json.loads(req_vehicle.text)
-    return JsonResponse({'ok':True, 'driver': resp_driver["first"], 'vMake': resp_vehicle["make"], 'vModel':resp_vehicle["model"], 'leave': details['leave_time'], 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
+        resp_driver = json.loads(json.loads(req_driver.text)['user'])['fields']            
+        resp_vehicle = json.loads(json.loads(req_vehicle.text)['car'])['fields']
+        leavetime = parse_datetime(details['leave_time'])
+    return JsonResponse({'ok':True, 'driver': resp_driver["first"], 'vMake': resp_vehicle["make"], 'vModel':resp_vehicle["model"], 'leave': leavetime.strftime("%B %d %-I:%M:%S %p"), 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
 
 def create_user(request):
     if request.method != 'POST':
@@ -140,4 +143,5 @@ def search_result(request):
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
     #check for query in post, don't remake ES every time
     es = Elasticsearch(['es'])
-    es.search(index='listing_index', body={'query':{'query_string':{'query': request.POST['query']}}, 'size':10})
+    results = es.search(index='listing_index', body={'query':{'query_string':{'query': request.POST['query']}}, 'size':10})
+    return JsonResponse(results['hits'])

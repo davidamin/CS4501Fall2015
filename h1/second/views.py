@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
+from datetime import datetime
+from django.utils.dateparse import parse_datetime
 import json
 import requests
 from kafka import SimpleProducer, KafkaClient
@@ -49,14 +51,16 @@ def home_detail(request):
     ride = json.loads(r.text)['ride']
     result_set = []
     for r in ride:
-        details = json.loads(r[1:-1])['fields']
+        details = json.loads(r)['fields']
         driver_pk = details['driver']
         vehicle_pk = details['car']
-        req_driver = requests.get('http://models-api:8000/models/get_user/ ' + str(driver_pk))
+        req_driver = requests.get('http://models-api:8000/models/get_user/' + str(driver_pk))
         req_vehicle = requests.get('http://models-api:8000/models/get_car/' + str(vehicle_pk))
-        resp_driver = json.loads(req_driver.text)
-        resp_vehicle = json.loads(req_vehicle.text)
-    return JsonResponse({'ok':True, 'driver': resp_driver["first"], 'vMake': resp_vehicle["make"], 'vModel':resp_vehicle["model"], 'leave': details['leave_time'], 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
+        resp_driver = json.loads(json.loads(req_driver.text)['user'])['fields']            
+        resp_vehicle = json.loads(json.loads(req_vehicle.text)['car'])['fields']
+        leavetime = parse_datetime(details['leave_time'])
+        arrivetime = parse_datetime(details['arrive_time'])
+    return JsonResponse({'ok':True, 'driver': resp_driver["first"], 'vMake': resp_vehicle["make"], 'vModel':resp_vehicle["model"], 'leave': leavetime.strftime("%B %d %-I:%M:%S %p"), 'start': details['start'], 'arrive': arrivetime.strftime("%B %d %-I:%M:%S %p"), 'Destination': details['destination']})
 
 def create_user(request):
     if request.method != 'POST':
