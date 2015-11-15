@@ -12,10 +12,14 @@
     <body>
         <!-- navigation bar -->
         <nav class="navbar navbar-default">
-            <a class="navbar-brand">Hoo's Ridin'</a>
+            <a class="navbar-brand" href="main.html">Hoo's Ridin'</a>
             <div class="container">
-                 <div class="collapse navbar-collapse navbar-ex1-collapse pull-right">
-                    <ul class="nav navbar-nav">
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <form class="nav navbar-form navbar-left" role="search">
+                        <input type="text" class="form-control" placeholder="Find a ride by keywords...">
+                        <button type="button" class="btn btn-default">Search</button>
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
                         <li> <a class="page-scroll nav-tab" id="rides-list" href="main.html">See Rides</a> </li>
                         <li> <a class="page-scroll nav-tab" id="post-ride" href="post-ride.html">Post a Ride</a> </li>
                         <li> <a class="page-scroll nav-tab" id="user-profile" href="user-profile.html">Your Profile</a> </li>
