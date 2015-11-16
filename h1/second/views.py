@@ -30,7 +30,7 @@ def ride_detail(request, ride):
         driver = "Driver Not Found"
     else:
         driver_model = json.loads(r2.text)['user']
-        driver_details = json.loads(driver_model[1:-1])['fields']
+        driver_details = json.loads(driver_model)['fields']
         driver = driver_details['first'] + " " + driver_details['last']
     r3 = requests.get('http://models-api:8000/models/get_car/' + str(vehicle_pk))
     ok = json.loads(r3.text)['ok']
@@ -39,7 +39,7 @@ def ride_detail(request, ride):
         vModel = "Not Found"
     else:
         car_model = json.loads(r3.text)['car']
-        car_details = json.loads(car_model[1:-1])['fields']
+        car_details = json.loads(car_model)['fields']
         vMake = car_details['make']
         vModel = car_details['model']
     return JsonResponse({'ok':True, 'driver': driver, 'vMake': vMake, 'vModel': vModel, 'leave': details['leave_time'], 'start': details['start'], 'arrive': details['arrive_time'], 'Destination': details['destination']})
