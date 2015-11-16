@@ -130,7 +130,11 @@ def add_new_vehicle(request):
     auth_req = requests.post('http://models-api:8000/models/is_auth', data={'auth':auth})
     ok = json.loads(auth_req.text)['ok']
     if ok:
-        resp = requests.post('http://models-api:8000/models/add_vehicle', data=request.POST)
+        username = json.loads(auth_req.text)['username']
+
+        post_values = request.POST.copy()
+        post_values['username'] = username
+        resp = requests.post('http://models-api:8000/models/add_vehicle', data=post_values)
         created = json.loads(resp.text)['ok']
         if created:
             return JsonResponse({'ok': True, 'log': 'Added vehicle'})
