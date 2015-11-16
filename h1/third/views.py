@@ -37,7 +37,18 @@ def ride_detail(request, ride):
 
 def search(request):
 	r = requests.post('http://exp-api:8000/exp/search/', data=request.POST)
-	
+	ok = json.loads(r.text)['ok']
+	if ok:
+		hits = json.loads(r.text)['results']['hits']
+		result_set = []
+		for ride in hits:
+			result_set.append(ride['_source'])
+		return render_to_response("search_results.html",
+			{'ok': True, 'hits': result_set},
+			context_instance=RequestContext(request))
+	return render_to_response("search_results.html",
+		{'ok': False},
+		context_instance=RequestContext(request))
 
 def login(request):
 	auth = request.COOKIES.get('auth')
