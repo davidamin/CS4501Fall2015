@@ -1,20 +1,27 @@
 <!DOCTYPE HTML>
+{% load static %}
+
 <html>
     <head>
-        <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="{% static 'main.css' %}">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="{% static 'main.js' %}"></script>
     </head>
     
     <body>
         <!-- navigation bar -->
         <nav class="navbar navbar-default">
-            <a class="navbar-brand">Hoo's Ridin'</a>
+            <a class="navbar-brand" href="main.html">Hoo's Ridin'</a>
             <div class="container">
-                 <div class="collapse navbar-collapse navbar-ex1-collapse pull-right">
-                    <ul class="nav navbar-nav">
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <form class="nav navbar-form navbar-left" role="search">
+                        <input type="text" class="form-control" placeholder="Find a ride by keywords...">
+                        <button type="button" class="btn btn-default">Search</button>
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
                         <li> <a class="page-scroll nav-tab" id="rides-list" href="main.html">See Rides</a> </li>
                         <li> <a class="page-scroll nav-tab" id="post-ride" href="post-ride.html">Post a Ride</a> </li>
                         <li> <a class="page-scroll nav-tab" id="user-profile" href="user-profile.html">Your Profile</a> </li>
@@ -27,16 +34,27 @@
         <!-- content view -->
         <div class="content">
             <div class="content-page container rides-list"> 
-                <div class="input-group">
-                    <input type="text" class="form-control" id="search-form" placeholder="Find a ride..." aria-label="...">
-                    <div class="input-group-btn">
-                        <button type="button" class="btn btn-default search-button">Search</button>
-                        <button type="button" class="btn btn-default" id="adv-search-button"> Advanced Search </button>
+                <div id="search">
+                    <div id="basic-input" class="input-group" role="group">
+                        <input type="text" class="form-control" id="search-form" placeholder="Find a ride by keywords..." aria-label="...">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default search-button">Search</button>
+                            <button type="button" class="btn btn-default" id="adv-search-button"> Advanced Search
+                                <span id="adv-search-span" class="glyphicon glyphicon-triangle-bottom"> </span> </button>
+                        </div>
+                    </div>
+                    <div id="adv-search-group" class="hidden" align="center"> 
+                        <form>
+                            <label>Driver</label><input type="text"> 
+                            <label>Starting Location</label><input type="text">
+                            <label>Destination</label><input type="text"> <br>
+                            <label>Departure Day</label><input type="date">  
+                            <label>Departure Time Range </label><input type="time"> - <input type="time">  
+                            <label>$</label><input type="text">
+                        </form>
                     </div>
                 </div>
-                <div class="input-group hidden" id="adv-search">
                 
-                </div>
                 <table class="table table-striped">
                     <thead>
                         <th> Ride ID </th>
