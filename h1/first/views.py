@@ -227,7 +227,8 @@ def is_auth(request):
     time_limit = datetime.now() - timedelta(hours=6)
     models.AuthTable.objects.filter(date_created__lt=time_limit).delete()
     if check_auth(auth):
-        return JsonResponse({'ok': True})
+        auth_obj = models.AuthTable.objects.get(authenticator=auth)
+        return JsonResponse({'ok': True, 'username': auth_obj.user_id.username})
     else:
         return JsonResponse({'ok': False, 'error': 'Invalid authenticator'})
 
