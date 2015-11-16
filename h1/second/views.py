@@ -47,7 +47,7 @@ def ride_detail(request, ride):
 def home_detail(request):
     if request.method != 'GET':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be GET'})
-    r = requests.get('http://models-api:8000/models/all_rides')
+    r = requests.get('http://models-api:8000/models/all_active_rides')
     ok = json.loads(r.text)['ok']
     if(ok != True):
         return JsonResponse({'ok':False})
@@ -63,7 +63,9 @@ def home_detail(request):
         resp_vehicle = json.loads(json.loads(req_vehicle.text)['car'])['fields']
         leavetime = parse_datetime(details['leave_time'])
         arrivetime = parse_datetime(details['arrive_time'])
-    return JsonResponse({'ok':True, 'driver': resp_driver["first"], 'vMake': resp_vehicle["make"], 'vModel':resp_vehicle["model"], 'leave': leavetime.strftime("%B %d %-I:%M:%S %p"), 'start': details['start'], 'arrive': arrivetime.strftime("%B %d %-I:%M:%S %p"), 'Destination': details['destination']})
+        ride_info = {'driver':resp_driver['first'], 'vMake': resp_vehicle['make'], 'vModel':resp_vehicle['model'], 'leave': leavetime.strftime("%B %d %-I:%M:%S %p"), 'start': details['start'], 'arrive': arrivetime.strftime("%B %d %-I:%M:%S %p"), 'Destination': details['destination']}
+        result_set.append(ride_info)
+    return JsonResponse({'ok':True, 'result_set': result_set})
 
 def create_user(request):
     if request.method != 'POST':
