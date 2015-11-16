@@ -264,10 +264,10 @@ def create_ride(request):
         new_ride.comments = request.POST['comments']
     if 'max_miles_offroute' in request.POST:
         new_ride.max_miles_offroute = request.POST['max_miles_offroute']
-    if 'vehicle' in request.POST:
-        new_ride.car = models.Vehicle.objects.get(pk=request.POST['vehicle'])
-    if 'driver' in request.POST:
-        new_ride.driver = models.User.objects.get(pk=request.POST['driver'])
+    user = models.User.objects.get(username=request.POST['username'])
+    vehicle = user.vehicle
+    new_ride.driver = user
+    new_ride.car = vehicle
     new_ride.save()
     return JsonResponse({'ok':True, 'log': 'Ride Created', 'id': new_ride.pk})
         
@@ -298,13 +298,13 @@ def update_ride(request, ride):
     this_car.save()
     return JsonResponse({'ok':True, 'log': 'Ride updated'})
     
-def get_ride(request, ride):
+def get_ride(request):
     if request.method != 'GET':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be get'})
     try:
-        ride = models.Ride.objects.get(pk=ride)
+        ride = models.Ride.objects.get(pk=request.GET['ride'])
     except models.Ride.DoesNotExist:
-        return JsonResponse({'ok': False, 'error': 'Failed to find ride id: ' + ride})
+        return JsonResponse({'ok': False, 'error': 'Failed to find ride id: ' + request.GET['ride']})
     ret_val = serializers.serialize('json',[ride,])
     return JsonResponse({'ok':True,'car':ret_val})
     
