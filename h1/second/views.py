@@ -9,6 +9,9 @@ from kafka import SimpleProducer, KafkaClient
 from elasticsearch import Elasticsearch
 
 # Create your views here.
+kafka = KafkaClient('kafka:9092')
+producer = SimpleProducer(kafka)
+es = Elasticsearch(['es'])
 
 def ride_detail(request, ride):
     if request.method != 'GET':
@@ -116,12 +119,14 @@ def add_new_ride(request):
         r2 = requests.post('http://models-api:8000/models/add_ride', data=post_values)
         d2 = json.loads(r2.text)['ok']
         ride_id = json.loads(r2.text)['id']
-        request.POST['id'] = ride_id
+        post_copy = request.POST.copy()
+        post_copy['id'] = ride_id
         if d2:
-            #Don't recreate these every time
-            kafka = KafkaClient('kafka:9092')
-            producer = SimpleProducer(kafka)
-            producer.send_messages(b'new-listings-topic', json.dumps(request.POST).encode('utf-8'))
+            try:
+                producer.send_messages(b'new-listings-topic', json.dumps(post_copy).encode('utf-8'))
+            except Exception:
+                #This is ugly, but if the topic doesn't exist we just try again. More than once is a problem though so we let that happen
+                producer.send_messages(b'new-listings-topic', json.dumps(post_copy).encode('utf-8'))
             return JsonResponse({'ok': True, 'log': 'Created Ride'})
         else:
             return JsonResponse({'ok': False, 'error': 'Failed to create ride'})
@@ -151,7 +156,7 @@ def add_new_vehicle(request):
 def search_result(request):
     if request.method != 'POST':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
-    #check for query in post, don't remake ES every time
-    es = Elasticsearch(['es'])
+    if 'query' not in request.POST:
+        return JsonResponse({'ok': False, 'error': 'No query field'})
     results = es.search(index='listing_index', body={'query':{'query_string':{'query': request.POST['query']}}, 'size':10})
     return JsonResponse(results['hits'])
