@@ -108,7 +108,12 @@ def add_new_ride(request):
     r = requests.post('http://models-api:8000/models/is_auth', data={'auth':auth})
     ok = json.loads(r.text)['ok']
     if ok:
-        r2 = requests.post('http://models-api:8000/models/add_ride', data=request.POST)
+        username = json.loads(r.text)['username']
+
+        post_values = request.POST.copy()
+        post_values['username'] = username
+
+        r2 = requests.post('http://models-api:8000/models/add_ride', data=post_values)
         d2 = json.loads(r2.text)['ok']
         ride_id = json.loads(r2.text)['id']
         request.POST['id'] = ride_id
