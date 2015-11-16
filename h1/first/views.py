@@ -48,6 +48,9 @@ def add_vehicle(request):
     if 'accomodations' in request.POST:
         new_car.accomodations = request.POST['accomodations']
     new_car.save()
+    user = models.User.objects.get(username=request.POST['username'])
+    user.vehicle = models.Vehicle.objects.latest('pk')
+    user.save()
     return JsonResponse({'ok':True, 'log': 'Added vehicle'})
 
 def car_list(request):
@@ -55,9 +58,10 @@ def car_list(request):
     formatted = [str(c.id) + str(c.make) + str(c.model) + '\n' for c in cars]
     return JsonResponse(serializers.serialize("json", models.Vehicle.objects.all()),safe=False)
 
-def get_car(request, car):
+def get_car(request):
     if request.method != 'GET':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be get'})
+    car = request.GET['car']
     try:
         v = models.Vehicle.objects.get(pk=car)
     except models.Vehicle.DoesNotExist:
@@ -124,8 +128,6 @@ def add_user(request):
         new_user.gender = request.POST['gender']
     if 'age' in request.POST:
         new_user.age = request.POST['age']
-    if 'vehicle' in request.POST:
-        new_user.vehicle = models.Vehicle.objects.get(pk=request.POST['vehicle'])
     new_user.save()
     return JsonResponse({'ok':True, 'log': 'User Created'})
 
@@ -168,13 +170,14 @@ def update_password(request, user):
         recover_user.password = make_password(request.POST['password'])
     return JsonResponse({'ok':True, 'log': 'Password Changed'})
 
-def get_user(request, user):
+def get_user(request):
     if request.method != 'GET':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be GET'})
+    user = request.GET['user']
     try:
-        this_user = models.User.objects.get(pk=user)
+        this_user = models.User.objects.get(username=user)
     except:
-        return JsonResponse({'ok': False, 'error': 'Failed to find user id ' + user})
+        return JsonResponse({'ok': False, 'error': 'Failed to find user id '})
     ret_val = model_to_json(this_user)
     return JsonResponse({'ok': True,'user': ret_val})
         
