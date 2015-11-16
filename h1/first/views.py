@@ -58,10 +58,9 @@ def car_list(request):
     formatted = [str(c.id) + str(c.make) + str(c.model) + '\n' for c in cars]
     return JsonResponse(serializers.serialize("json", models.Vehicle.objects.all()),safe=False)
 
-def get_car(request):
+def get_car(request, car):
     if request.method != 'GET':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be get'})
-    car = request.GET['car']
     try:
         v = models.Vehicle.objects.get(pk=car)
     except models.Vehicle.DoesNotExist:
@@ -170,14 +169,24 @@ def update_password(request, user):
         recover_user.password = make_password(request.POST['password'])
     return JsonResponse({'ok':True, 'log': 'Password Changed'})
 
-def get_user(request):
+def get_user(request, user):
+    if request.method != 'GET':
+        return JsonResponse({'ok': False, 'error': 'Wrong request type, should be GET'})
+    try:
+        this_user = models.User.objects.get(pk=user)
+    except:
+        return JsonResponse({'ok': False, 'error': 'Failed to find user id ' + user})
+    ret_val = model_to_json(this_user)
+    return JsonResponse({'ok': True,'user': ret_val})
+
+def get_user_by_name(request):
     if request.method != 'GET':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be GET'})
     user = request.GET['user']
     try:
         this_user = models.User.objects.get(username=user)
     except:
-        return JsonResponse({'ok': False, 'error': 'Failed to find user id '})
+        return JsonResponse({'ok': False, 'error': 'Failed to find user ' + user})
     ret_val = model_to_json(this_user)
     return JsonResponse({'ok': True,'user': ret_val})
         
@@ -298,13 +307,13 @@ def update_ride(request, ride):
     this_car.save()
     return JsonResponse({'ok':True, 'log': 'Ride updated'})
     
-def get_ride(request):
+def get_ride(request, ride):
     if request.method != 'GET':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be get'})
     try:
-        ride = models.Ride.objects.get(pk=request.GET['ride'])
+        ride = models.Ride.objects.get(pk=ride)
     except models.Ride.DoesNotExist:
-        return JsonResponse({'ok': False, 'error': 'Failed to find ride id: ' + request.GET['ride']})
+        return JsonResponse({'ok': False, 'error': 'Failed to find ride id: ' + ride})
     ret_val = serializers.serialize('json',[ride,])
     return JsonResponse({'ok':True,'car':ret_val})
     
