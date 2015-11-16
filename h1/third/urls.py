@@ -9,4 +9,5 @@ urlpatterns = patterns('',
 	url(r'^logout', views.logout),
 	url(r'^create_user', views.create_user),
 	url(r'^create_vehicle', views.create_vehicle),
+	url(r'^create_ride', views.create_ride),
 )

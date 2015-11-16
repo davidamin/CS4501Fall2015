@@ -4,7 +4,7 @@ from django.template.loader import get_template
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 from django import forms
-from .forms import LoginForm, CreateVehicle, CreateUser
+from .forms import LoginForm, CreateVehicle, CreateUser, CreateRide
 import json
 import requests
 
@@ -17,9 +17,11 @@ def custom_processor(request):
     }
 
 def view_normal(request):
-    r = requests.get('http://exp-api:8000/exp/home_detail/')
-    return render_to_response("main.html",json.loads(r.text),
-    context_instance=RequestContext(request, processors=[custom_processor]))
+    #r = requests.get('http://exp-api:8000/exp/home_detail/')
+    #ok = json.loads(r.text)['ok']
+    #if ok:
+    #	return render_to_response("main.html",json.loads(r.text),context_instance=RequestContext(request, processors=[custom_processor]))
+    return render_to_response("main.html", {}, context_instance=RequestContext(request))
 
 def ride_detail(request, ride):
     r = requests.get('http://exp-api:8000/exp/ride_detail/' + str(ride))
@@ -121,3 +123,32 @@ def create_vehicle(request):
 				context_instance=RequestContext(request))
 		return render_to_response("create_vehicle.html",
 			{'creation_form': creation_form, 'Response': "Vehicle succesfully added."})
+
+def create_ride(request):
+	auth = request.COOKIES.get('auth')
+	if not auth:
+		return HttpResponseRedirect('/v1/login/')
+	if request.method == 'GET':
+		creation_form = CreateRide()
+		return render_to_response("create_ride.html",
+			{'creation_form': creation_form},
+			context_instance=RequestContext(request))
+
+	else:
+		creation_form = CreateRide(request.POST)
+		if not creation_form.is_valid():
+			return render_to_response("create_ride.html",
+				{'creation_form': creation_form, 'Response': "Invalid Input. Please try again."},
+				context_instance=RequestContext(request))
+		
+		post_values = request.POST.copy()
+		post_values['auth'] = auth
+
+		resp = requests.post('http://exp-api:8000/exp/create_ride/', data=post_values)
+		ok = json.loads(resp.text)['ok']
+		if not ok:
+			return render_to_response("create_ride.html",
+				{'creation_form': creation_form, 'Response': "There was an error while attempting to add the trip."},
+				context_instance=RequestContext(request))
+		return render_to_response("create_ride.html",
+			{'creation_form': creation_form, 'Response': "Trip succesfully added."})

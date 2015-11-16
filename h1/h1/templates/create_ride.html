@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link rel="stylesheet" href="login.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="login.js"></script>
+    </head>
+    
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid"> 
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand">Hoo's Ridin'</a>
+            </div>
+          </div>
+        </nav>
+        
+        <div id="content">
+            <div id="login-form" class="content-page">
+                <h3 id="title" class="content-item"> Create Ride </h3>
+                <div id="alert1thing" style="display: none">
+                    <div class="alert alert-dismissible alert-danger">
+                      <p id="alert1"></p>
+                    </div>
+                </div>
+		<form id="creation_form" method="post" action="/v1/create_ride/" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ Response }}
+        <table>
+		{{ creation_form.as_table }}
+        </table>
+                <button type="submit" value="submit" class="btn btn-info"> Create Ride </button> <p></p>
+		</form>
+            </div>
+        </div>
+	</body>
+</html>	

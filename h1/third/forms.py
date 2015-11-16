@@ -31,3 +31,11 @@ class CreateUser(forms.Form):
 	city = forms.CharField(max_length=100, label = "City")
 	state = forms.CharField(max_length=2, label="State")
 	payment_type = forms.IntegerField(label="Payment Type")
+
+class CreateRide(forms.Form):
+	leave_time = forms.CharField(required = False)
+	arrive_time = forms.CharField(required = False)
+	destination = forms.CharField(max_length = 30)
+	start = forms.CharField(max_length = 30)
+	max_miles_offroute = forms.FloatField(required = False)
+	comments = forms.CharField(max_length = 500, widget = forms.Textarea, required=False)
