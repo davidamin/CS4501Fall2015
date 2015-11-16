@@ -35,6 +35,10 @@ def ride_detail(request, ride):
         },
     context_instance=RequestContext(request))
 
+def search(request):
+	r = requests.post('http://exp-api:8000/exp/search/', data=request.POST)
+	
+
 def login(request):
 	auth = request.COOKIES.get('auth')
 	if auth:
