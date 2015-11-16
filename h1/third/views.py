@@ -17,10 +17,10 @@ def custom_processor(request):
     }
 
 def view_normal(request):
-    #r = requests.get('http://exp-api:8000/exp/home_detail/')
-    #ok = json.loads(r.text)['ok']
-    #if ok:
-    #	return render_to_response("main.html",json.loads(r.text),context_instance=RequestContext(request, processors=[custom_processor]))
+    r = requests.get('http://exp-api:8000/exp/home_detail/')
+    ok = json.loads(r.text)['ok']
+    if ok:
+    	return render_to_response("main.html",json.loads(r.text),context_instance=RequestContext(request, processors=[custom_processor]))
     return render_to_response("main.html", {}, context_instance=RequestContext(request))
 
 def ride_detail(request, ride):
@@ -145,6 +145,8 @@ def create_ride(request):
 		post_values['auth'] = auth
 
 		resp = requests.post('http://exp-api:8000/exp/create_ride/', data=post_values)
+		#with open("outfile.txt","w") as f:
+		#	f.write(resp.text)
 		ok = json.loads(resp.text)['ok']
 		if not ok:
 			return render_to_response("create_ride.html",
