@@ -54,8 +54,9 @@
                         </form>
                     </div>
                 </div>
-                
+                {% if ok %}
                 <table class="table table-striped">
+                    <caption>Search Results</caption>
                     <thead>
                         <th> Ride ID </th>
                         <th> Driver </th> 
@@ -69,13 +70,13 @@
                         <th> | Button |</th> <!-- Column for the "choose ride button" -->
                     </thead>
                     <tbody id = "rides">
-                    {% for ride in result_set %}
+                    {% for ride in hits %}
                         <td> {{ ID }} </td>
                         <td> {{ ride.driver }} </td>
                         <td> {{ ride.start }} </td> 
-                        <td> {{ ride.Destination }} </td>
-                        <td> {{ ride.leave }} </td> 
-                        <td> {{ ride.arrive }} </td>
+                        <td> {{ ride.destination }} </td>
+                        <td> {{ ride.leave_time }} </td> 
+                        <td> {{ ride.arrive_time }} </td>
                         <!--<td> {{ miles }} </td>
                         <td> {{ seats }} </td>
                         <td> {{ var }} </td> -->
@@ -83,6 +84,7 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                {% endif %}
             </div>
         </div>
     </body>

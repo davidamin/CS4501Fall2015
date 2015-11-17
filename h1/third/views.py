@@ -35,6 +35,21 @@ def ride_detail(request, ride):
         },
     context_instance=RequestContext(request))
 
+def search(request):
+	r = requests.post('http://exp-api:8000/exp/search/', data=request.POST)
+	ok = json.loads(r.text)['ok']
+	if ok:
+		hits = json.loads(r.text)['results']['hits']
+		result_set = []
+		for ride in hits:
+			result_set.append(ride['_source'])
+		return render_to_response("search_results.html",
+			{'ok': True, 'hits': result_set},
+			context_instance=RequestContext(request))
+	return render_to_response("search_results.html",
+		{'ok': False},
+		context_instance=RequestContext(request))
+
 def login(request):
 	auth = request.COOKIES.get('auth')
 	if auth:
@@ -70,6 +85,15 @@ def logout(request):
 	response = HttpResponseRedirect('/')
 	response.delete_cookie('auth')
 	return response
+
+def results(request):
+	if request.method != 'GET':
+		return render_to_response("results.html",{},context_instance=RequestContext(request, processors=[custom_processor]))
+	resp = requests.post('http://exp-api:8000/exp/search/', data={'query':'Culpepper'})
+	ok = json.loads(resp.text)['ok']
+	if not ok:
+		return render_to_response("results.html",{},context_instance=RequestContext(request, processors=[custom_processor]))
+	return render_to_response("results.html",json.loads(resp.text),context_instance=RequestContext(request, processors=[custom_processor]))
 
 def create_user(request):
 	auth = request.COOKIES.get('auth')

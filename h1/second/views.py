@@ -63,7 +63,9 @@ def home_detail(request):
         resp_vehicle = json.loads(json.loads(req_vehicle.text)['car'])['fields']
         leavetime = parse_datetime(details['leave_time'])
         arrivetime = parse_datetime(details['arrive_time'])
-    return JsonResponse({'ok':True, 'driver': resp_driver["first"], 'vMake': resp_vehicle["make"], 'vModel':resp_vehicle["model"], 'leave': leavetime.strftime("%B %d %-I:%M:%S %p"), 'start': details['start'], 'arrive': arrivetime.strftime("%B %d %-I:%M:%S %p"), 'Destination': details['destination']})
+        ride_info = {'driver':resp_driver['first'], 'vMake': resp_vehicle['make'], 'vModel':resp_vehicle['model'], 'leave': leavetime.strftime("%B %d %-I:%M:%S %p"), 'start': details['start'], 'arrive': arrivetime.strftime("%B %d %-I:%M:%S %p"), 'Destination': details['destination']}
+        result_set.append(ride_info)
+    return JsonResponse({'ok':True, 'result_set': result_set})
 
 def create_user(request):
     if request.method != 'POST':
@@ -159,4 +161,4 @@ def search_result(request):
     if 'query' not in request.POST:
         return JsonResponse({'ok': False, 'error': 'No query field'})
     results = es.search(index='listing_index', body={'query':{'query_string':{'query': request.POST['query']}}, 'size':10})
-    return JsonResponse(results['hits'])
+    return JsonResponse({'ok':True, 'results': results['hits']})
