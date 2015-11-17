@@ -284,6 +284,11 @@ def ride_list(request):
     rides = models.Ride.objects.all()
     formatted = [model_to_json(ride) for ride in rides]
     return JsonResponse({'ok': True, 'ride': formatted})
+
+def active_ride_list(request):
+    rides = models.Ride.objects.filter(active=True)
+    formatted = [model_to_json(ride) for ride in rides]
+    return JsonResponse({'ok': True, 'ride': formatted})
     
 def update_ride(request, ride):
     if request.method != 'POST':
