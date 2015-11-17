@@ -36,7 +36,7 @@ def ride_detail(request, ride):
     context_instance=RequestContext(request))
 
 def search(request):
-	r = requests.post('http://exp-api:8000/exp/search/', data=request.POST)
+	r = requests.post('http://exp-api:8000/exp/search/', data={'query': request.GET['query']})
 	ok = json.loads(r.text)['ok']
 	if ok:
 		hits = json.loads(r.text)['results']['hits']
