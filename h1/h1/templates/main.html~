@@ -17,9 +17,15 @@
             <a class="navbar-brand" href="/">Hoo's Ridin'</a>
             <div class="container">
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
+<<<<<<< HEAD
                     <form class="nav navbar-form navbar-left" role="search" action="/search" method="GET">
                         <input type="text" class="form-control" placeholder="Find a ride by keywords..." name="query">
                         <button type="submit" class="btn btn-default">Search</button>
+=======
+                    <form class="nav navbar-form navbar-left" role="search" method="post" action="/v1/search/" enctype="multipart/form-data">
+                        <input type="text" class="form-control" placeholder="Find a ride by keywords...">
+                        <button type="button" class="btn btn-default">Search</button>
+>>>>>>> 0422d1c61498f9a673072a52444065b6cf474456
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <li> <a class="page-scroll nav-tab" id="rides-list" href="main.html">See Rides</a> </li>

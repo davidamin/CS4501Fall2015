@@ -20,6 +20,6 @@ urlpatterns = patterns('',
 	url(r'^all_rides$',views.ride_list),
 	url(r'^update_ride/(\d+)$',views.update_ride),
 	url(r'^deactivate_ride/(\d+)$',views.deactivate_ride),
-	url(r'^get_ride/$',views.get_ride),
+	url(r'^get_ride/(\d+)$',views.get_ride),
 	url(r'^get_user_by_name/$',views.get_user_by_name),
 )

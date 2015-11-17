@@ -47,7 +47,7 @@ def ride_detail(request, ride):
 def home_detail(request):
     if request.method != 'GET':
         return JsonResponse({'ok': False, 'error': 'Wrong request type, should be GET'})
-    r = requests.get('http://models-api:8000/models/all_active_rides')
+    r = requests.get('http://models-api:8000/models/all_rides')
     ok = json.loads(r.text)['ok']
     if(ok != True):
         return JsonResponse({'ok':False})
@@ -161,4 +161,4 @@ def search_result(request):
     if 'query' not in request.POST:
         return JsonResponse({'ok': False, 'error': 'No query field'})
     results = es.search(index='listing_index', body={'query':{'query_string':{'query': request.POST['query']}}, 'size':10})
-    return JsonResponse(results['hits'])
+    return JsonResponse({'ok':True, 'results': results['hits']})
