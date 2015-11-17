@@ -161,4 +161,4 @@ def search_result(request):
     if 'query' not in request.POST:
         return JsonResponse({'ok': False, 'error': 'No query field'})
     results = es.search(index='listing_index', body={'query':{'query_string':{'query': request.POST['query']}}, 'size':10})
-    return JsonResponse(results['hits'])
+    return JsonResponse({'ok':True, 'results':results['hits']})
