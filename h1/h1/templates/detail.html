@@ -32,23 +32,32 @@
         <!-- content view -->
         <div class="content">
             <div class="content-page user-profile">
-                <div class="col-xs-12 col-md-3" id="map-embed">
-                    <img class="img-rounded" alt="Travel Map" height="300px" width="200px">
-                </div>
-                <div class="col-xs-12 col-md-9" id ="ride-info">
-                    <h2 id="Destination">Drive to {{ Destination }}</h2>
-		    <p id="driver"> Driver Name: {{ Driver }} </p>
-                    <p id="vehicle"> Vehicle : {{ vMake }} {{ vModel }} </p>
-                    <div class="row">
-                        <div class="panel panel-default col-xs-6 col-md-6">
-                            <div class="panel-heading"> Leave </div>
-                                <p id="leave-time"> {{ leave }} </p>
-                    		<p id="start-place"> {{ start }} </p>
+                <div class="row">
+                    <div class="col-xs-12 col-md-3" id="map-embed">
+                        <img class="img-rounded" alt="Travel Map" height="300px" width="200px">
+                    </div>
+                    <div class="col-xs-12 col-md-9" id ="ride-info">`
+                        <div class ="header row"> 
+                            <div class="col-xs-6 col-md-6">
+                                <h2 id="Destination">Drive to {{ Destination }}</h2>
+                                <p id="driver"> Driver Name: {{ Driver }} </p>
+                                <p id="vehicle"> Vehicle : {{ vMake }} {{ vModel }} </p>
+                            </div>
+                             <div class="col-xs-6 col-md-6">
+                                <button class="btn btn-default  pull-right" type="submit"> Join Ride </button>
+                            </div>
                         </div>
-                        <div class="panel panel-default col-xs-6 col-md-6">
-                            <div class="panel-heading"> Arrive </div>
-                    		<p id="arrive-time"> {{ arrive }} </p>
-                    		<p id="dest-place"> {{ Destination }} </p>
+                        <div class="row">
+                            <div class="panel panel-default col-xs-6 col-md-6">
+                                <div class="panel-heading"> Leave </div>
+                                <p id="leave-time"> {{ leave }} </p>
+                        		<p id="start-place"> {{ start }} </p>
+                            </div>
+                            <div class="panel panel-default col-xs-6 col-md-6">
+                                <div class="panel-heading"> Arrive </div>
+                        		<p id="arrive-time"> {{ arrive }} </p>
+                        		<p id="dest-place"> {{ Destination }} </p>
+                            </div>
                         </div>
                     </div>
                 </div>
