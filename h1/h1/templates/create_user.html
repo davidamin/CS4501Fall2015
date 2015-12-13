@@ -34,6 +34,9 @@
 		<form id="creation_form" method="post" action="/v1/create_user/" enctype="multipart/form-data">
 		{% csrf_token %}
 		{{ Response }}
+        {% if Success%}
+            <a href="/create_vehicle">Create Vehicle</a>
+        {% endif %}
         <table>
 		{{ creation_form.as_table }}
         </table>
