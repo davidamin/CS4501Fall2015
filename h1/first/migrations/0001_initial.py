@@ -11,9 +11,19 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='AuthTable',
+            fields=[
+                ('authenticator', models.CharField(primary_key=True, serialize=False, max_length=255)),
+                ('date_created', models.DateTimeField()),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='Ride',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
                 ('leave_time', models.DateTimeField(blank=True)),
                 ('arrive_time', models.DateTimeField(blank=True)),
                 ('destination', models.CharField(blank=True, max_length=30)),
@@ -29,7 +39,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='User',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
                 ('username', models.CharField(unique=True, max_length=24)),
                 ('first', models.CharField(max_length=20)),
                 ('last', models.CharField(max_length=20)),
@@ -51,7 +61,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Vehicle',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
                 ('max_seats', models.IntegerField(default=0, null=True)),
                 ('trunk_space', models.FloatField(default=0.0)),
                 ('notes', models.CharField(blank=True, max_length=500)),
@@ -72,7 +82,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='vehicle',
-            field=models.ForeignKey(to='first.Vehicle'),
+            field=models.ForeignKey(blank=True, null=True, to='first.Vehicle'),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -84,6 +94,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='ride',
             name='driver',
+            field=models.ForeignKey(to='first.User'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='authtable',
+            name='user_id',
             field=models.ForeignKey(to='first.User'),
             preserve_default=True,
         ),
