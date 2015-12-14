@@ -17,11 +17,13 @@ def custom_processor(request):
     }
 
 def view_normal(request):
-    r = requests.get('http://exp-api:8000/exp/home_detail/')
-    ok = json.loads(r.text)['ok']
-    if ok:
-    	return render_to_response("main.html",json.loads(r.text),context_instance=RequestContext(request, processors=[custom_processor]))
-    return render_to_response("main.html", {}, context_instance=RequestContext(request))
+	auth = request.COOKIES.get('auth')
+	if auth:
+	    r = requests.get('http://exp-api:8000/exp/home_detail/')
+	    ok = json.loads(r.text)['ok']
+	    if ok:
+	    	return render_to_response("main.html",json.loads(r.text),context_instance=RequestContext(request, processors=[custom_processor]))
+	return HttpResponseRedirect('/v1/login')
 
 def ride_detail(request, ride):
     r = requests.get('http://exp-api:8000/exp/ride_detail/' + str(ride))
@@ -36,7 +38,7 @@ def ride_detail(request, ride):
     context_instance=RequestContext(request))
 
 def search(request):
-	r = requests.post('http://exp-api:8000/exp/search/', data=request.POST)
+	r = requests.post('http://exp-api:8000/exp/search/', data={'query': request.GET['query']})
 	ok = json.loads(r.text)['ok']
 	if ok:
 		hits = json.loads(r.text)['results']['hits']
@@ -102,22 +104,26 @@ def create_user(request):
 	if request.method == 'GET':
 		creation_form = CreateUser()
 		return render_to_response("create_user.html",
-			{'creation_form': creation_form},
+			{'creation_form': creation_form, "Success": False},
 			context_instance=RequestContext(request))
 	else:
 		creation_form = CreateUser(request.POST)
 		if not creation_form.is_valid():
 			return render_to_response("create_user.html",
-				{'creation_form': creation_form, 'Response': "Invalid Input. Please try again."},
+				{'creation_form': creation_form, 'Response': "Invalid Input. Please try again.", "Success": False},
 				context_instance=RequestContext(request))
 		resp = requests.post('http://exp-api:8000/exp/create_user/', data=request.POST)
 		ok = json.loads(resp.text)['ok']
 		if not ok:
 			return render_to_response("create_user.html",
-				{'creation_form': creation_form, 'Response': "There was an error while attempting to create the user"},
+				{'creation_form': creation_form, 'Response': "There was an error while attempting to create the user", "Success": False},
 				context_instance=RequestContext(request))
+		authenticator = json.loads(resp.text)['auth']
+		response = HttpResponseRedirect('/create_vehicle')
+		response.set_cookie("auth", authenticator)
+		return response
 		return render_to_response("create_user.html",
-			{'creation_form': creation_form, 'Response': "User sucessfully created."},
+			{'creation_form': creation_form, 'Response': "User sucessfully created.", "Success": True},
 			context_instance=RequestContext(request))
 
 def create_vehicle(request):

@@ -17,13 +17,13 @@
             <a class="navbar-brand" href="main.html">Hoo's Ridin'</a>
             <div class="container">
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
-                    <form class="nav navbar-form navbar-left" role="search" method="post" action="/v1/search/" enctype="multipart/form-data">
-                        <input type="text" class="form-control" placeholder="Find a ride by keywords...">
-                        <button type="button" class="btn btn-default">Search</button>
-                    </form>
+                    <!-- <form class="nav navbar-form navbar-left" role="search" action="/search" method="GET">
+                        <input type="text" class="form-control" placeholder="Find a ride by keywords..." name="query">
+                        <button type="submit" class="btn btn-default">Search</button>
+                    </form> -->
                     <ul class="nav navbar-nav navbar-right">
                         <li> <a class="page-scroll nav-tab" id="rides-list" href="main.html">See Rides</a> </li>
-                        <li> <a class="page-scroll nav-tab" id="post-ride" href="post-ride.html">Post a Ride</a> </li>
+                        <li> <a class="page-scroll nav-tab" id="post-ride" href="create_ride.html">Post a Ride</a> </li>
                         <li> <a class="page-scroll nav-tab" id="user-profile" href="user-profile.html">Your Profile</a> </li>
                         <li> <a class="page-scroll nav-tab" id="logout" href="logout.html">Logout</a> </li>
                     </ul>
@@ -36,12 +36,14 @@
             <div class="content-page container rides-list"> 
                 <div id="search">
                     <div id="basic-input" class="input-group" role="group">
-                        <input type="text" class="form-control" id="search-form" placeholder="Find a ride by keywords..." aria-label="...">
-                        <div class="input-group-btn">
-                            <button type="button" class="btn btn-default search-button">Search</button>
+                    <form role="search" action="/search" method="GET">
+                    <div class="input-group-btn">
+                        <input type="text" class="form-control" id="search-form" placeholder="Find a ride by keywords..." aria-label="..." name="query">
+                            <button type="submit" class="btn btn-default search-button">Search</button>
                             <button type="button" class="btn btn-default" id="adv-search-button"> Advanced Search
                                 <span id="adv-search-span" class="glyphicon glyphicon-triangle-bottom"> </span> </button>
                         </div>
+                    </form>
                     </div>
                     <div id="adv-search-group" class="hidden" align="center"> 
                         <form>
@@ -66,7 +68,7 @@
                         <!--<th> Detour Miles </th> 
                         <th> Seats </th> 
                         <th> $ per Seat </th> -->
-                        <th> | Button |</th> <!-- Column for the "choose ride button" -->
+                        <th> </th> <!-- Column for the "choose ride button" -->
                     </thead>
                     <tbody id = "rides">
                     {% for ride in result_set %}

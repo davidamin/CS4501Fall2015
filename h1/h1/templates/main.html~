@@ -14,12 +14,12 @@
     <body>
         <!-- navigation bar -->
         <nav class="navbar navbar-default">
-            <a class="navbar-brand" href="main.html">Hoo's Ridin'</a>
+            <a class="navbar-brand" href="/">Hoo's Ridin'</a>
             <div class="container">
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
-                    <form class="nav navbar-form navbar-left" role="search">
-                        <input type="text" class="form-control" placeholder="Find a ride by keywords...">
-                        <button type="button" class="btn btn-default">Search</button>
+                    <form class="nav navbar-form navbar-left" role="search" action="/search" method="GET">
+                        <input type="text" class="form-control" placeholder="Find a ride by keywords..." name="query">
+                        <button type="submit" class="btn btn-default">Search</button>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <li> <a class="page-scroll nav-tab" id="rides-list" href="main.html">See Rides</a> </li>
@@ -36,12 +36,14 @@
             <div class="content-page container rides-list"> 
                 <div id="search">
                     <div id="basic-input" class="input-group" role="group">
-                        <input type="text" class="form-control" id="search-form" placeholder="Find a ride by keywords..." aria-label="...">
-                        <div class="input-group-btn">
-                            <button type="button" class="btn btn-default search-button">Search</button>
+                    <form class="nav navbar-form navbar-left" role="search" action="/search" method="GET">
+                    <div class="input-group-btn">
+                        <input type="text" class="form-control" id="search-form" placeholder="Find a ride by keywords..." aria-label="..." name="query">
+                            <button type="submit" class="btn btn-default search-button">Search</button>
                             <button type="button" class="btn btn-default" id="adv-search-button"> Advanced Search
                                 <span id="adv-search-span" class="glyphicon glyphicon-triangle-bottom"> </span> </button>
                         </div>
+                    </form>
                     </div>
                     <div id="adv-search-group" class="hidden" align="center"> 
                         <form>
@@ -63,22 +65,24 @@
                         <th> Destination </th> 
                         <th> Departure Time</th> 
                         <th> ETA </th> 
-                        <th> Detour Miles </th> 
+                        <!--<th> Detour Miles </th> 
                         <th> Seats </th> 
-                        <th> $ per Seat </th> 
+                        <th> $ per Seat </th> -->
                         <th> | Button |</th> <!-- Column for the "choose ride button" -->
                     </thead>
                     <tbody id = "rides">
+                    {% for ride in result_set %}
                         <td> {{ ID }} </td>
-                        <td> {{ driver }} </td>
-                        <td> {{ start }} </td> 
-                        <td> {{ Destination }} </td>
-                        <td> {{ leave }} </td> 
-                        <td> {{ arrive }} </td>
-                        <td> {{ miles }} </td>
+                        <td> {{ ride.driver }} </td>
+                        <td> {{ ride.start }} </td> 
+                        <td> {{ ride.Destination }} </td>
+                        <td> {{ ride.leave }} </td> 
+                        <td> {{ ride.arrive }} </td>
+                        <!--<td> {{ miles }} </td>
                         <td> {{ seats }} </td>
-                        <td> {{ var }} </td>
-                        <td> <button type="button" class="btn btn-default" id="select-ride"> Select </button> </td>
+                        <td> {{ var }} </td> -->
+                        <td> <button type="button" class="btn btn-default" id="select-ride"> Select </button> </td><tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>

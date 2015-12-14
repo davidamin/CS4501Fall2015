@@ -6,7 +6,6 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="login.js"></script>
     </head>
     
     <body>
@@ -35,10 +34,15 @@
 		<form id="creation_form" method="post" action="/v1/create_user/" enctype="multipart/form-data">
 		{% csrf_token %}
 		{{ Response }}
+        {% if Success%}
+            <a href="/create_vehicle">Create Vehicle</a>
+        {% endif %}
         <table>
 		{{ creation_form.as_table }}
         </table>
-                <button type="submit" value="submit" class="btn btn-info"> Submit </button> <p></p>
+            <div class ="row">
+                <a class="btn btn-default" href="login.html"> Back to Login </a>
+                <button type="submit" value="submit" class="btn btn-info"> Create </button> <p></p>
 		</form>
             </div>
         </div>
