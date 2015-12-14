@@ -55,6 +55,7 @@ def home_detail(request):
     result_set = []
     for r in ride:
         details = json.loads(r)['fields']
+        pk = json.loads(r)['pk']
         driver_pk = details['driver']
         vehicle_pk = details['car']
         req_driver = requests.get('http://models-api:8000/models/get_user/' + str(driver_pk))
@@ -63,7 +64,7 @@ def home_detail(request):
         resp_vehicle = json.loads(json.loads(req_vehicle.text)['car'])['fields']
         leavetime = parse_datetime(details['leave_time'])
         arrivetime = parse_datetime(details['arrive_time'])
-        ride_info = {'driver':resp_driver['first'], 'vMake': resp_vehicle['make'], 'vModel':resp_vehicle['model'], 'leave': leavetime.strftime("%B %d %-I:%M:%S %p"), 'start': details['start'], 'arrive': arrivetime.strftime("%B %d %-I:%M:%S %p"), 'Destination': details['destination']}
+        ride_info = {'ID':pk ,'driver':resp_driver['first'], 'vMake': resp_vehicle['make'], 'vModel':resp_vehicle['model'], 'leave': leavetime.strftime("%B %d %-I:%M:%S %p"), 'start': details['start'], 'arrive': arrivetime.strftime("%B %d %-I:%M:%S %p"), 'Destination': details['destination']}
         result_set.append(ride_info)
     return JsonResponse({'ok':True, 'result_set': result_set})
 
