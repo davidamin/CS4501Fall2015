@@ -73,7 +73,7 @@
                     </thead>
                     <tbody id = "rides">
                     {% for ride in hits %}
-                        <td> {{ ID }} </td>
+                        <td> {{ ride.id }} </td>
                         <td> {{ ride.driver }} </td>
                         <td> {{ ride.start }} </td> 
                         <td> {{ ride.destination }} </td>
@@ -82,7 +82,7 @@
                         <!--<td> {{ miles }} </td>
                         <td> {{ seats }} </td>
                         <td> {{ var }} </td> -->
-                        <td> <button type="button" class="btn btn-default" id="select-ride"> Select </button> </td><tr>
+                        <td> <button type="button" class="btn btn-default" id="select-ride" onclick="window.location='/ride_detail/{{ ride.id }}';"> Select </button> </td><tr>
                     {% endfor %}
                     </tbody>
                 </table>

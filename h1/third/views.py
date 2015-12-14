@@ -17,13 +17,11 @@ def custom_processor(request):
     }
 
 def view_normal(request):
-	auth = request.COOKIES.get('auth')
-	if auth:
-	    r = requests.get('http://exp-api:8000/exp/home_detail/')
-	    ok = json.loads(r.text)['ok']
-	    if ok:
-	    	return render_to_response("main.html",json.loads(r.text),context_instance=RequestContext(request, processors=[custom_processor]))
-	return HttpResponseRedirect('/v1/login')
+    r = requests.get('http://exp-api:8000/exp/home_detail/')
+    ok = json.loads(r.text)['ok']
+    if ok:
+    	return render_to_response("main.html",json.loads(r.text),context_instance=RequestContext(request, processors=[custom_processor]))
+    return HttpResponseRedirect('/v1/login')
 
 def ride_detail(request, ride):
     r = requests.get('http://exp-api:8000/exp/ride_detail/' + str(ride))
