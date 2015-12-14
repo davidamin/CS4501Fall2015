@@ -22,10 +22,10 @@
                         <button type="submit" class="btn btn-default">Search</button>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
-                        <li> <a class="page-scroll nav-tab" id="rides-list" href="main.html">See Rides</a> </li>
-                        <li> <a class="page-scroll nav-tab" id="post-ride" href="post-ride.html">Post a Ride</a> </li>
-                        <li> <a class="page-scroll nav-tab" id="user-profile" href="user-profile.html">Your Profile</a> </li>
-                        <li> <a class="page-scroll nav-tab" id="logout" href="logout.html">Logout</a> </li>
+                        <li> <a class="page-scroll nav-tab" id="rides-list" href="/">See Rides</a> </li>
+                        <li> <a class="page-scroll nav-tab" id="post-ride" href="/create_ride">Post a Ride</a> </li>
+                        <li> <a class="page-scroll nav-tab" id="user-profile" href="/admin">Your Profile</a> </li>
+                        <li> <a class="page-scroll nav-tab" id="logout" href="/logout">Logout</a> </li>
                     </ul>
                 </div>
             </div>
@@ -36,7 +36,7 @@
             <div class="content-page container rides-list"> 
                 <div id="search">
                     <div id="basic-input" class="input-group" role="group">
-                    <form class="nav navbar-form navbar-left" role="search" action="/search" method="GET">
+                    <form role="search" action="/search" method="GET">
                     <div class="input-group-btn">
                         <input type="text" class="form-control" id="search-form" placeholder="Find a ride by keywords..." aria-label="..." name="query">
                             <button type="submit" class="btn btn-default search-button">Search</button>
@@ -81,7 +81,7 @@
                         <!--<td> {{ miles }} </td>
                         <td> {{ seats }} </td>
                         <td> {{ var }} </td> -->
-                        <td> <button type="button" class="btn btn-default" id="select-ride"> Select </button> </td><tr>
+                        <td> <button type="button" class="btn btn-default" id="select-ride" onclick="window.location='/ride_detail/{{ ID }}';"> Select </button> </td><tr>
                     {% endfor %}
                     </tbody>
                 </table>
