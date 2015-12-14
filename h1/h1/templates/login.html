@@ -6,7 +6,6 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="login.js"></script>
     </head>
     
     <body>
@@ -38,13 +37,14 @@
         <table>
 		{{ login_form.as_table }}
         </table>
-                <button type="submit" value="submit" class="btn btn-info"> Log In </button> <p></p>
-		</form>
-                <button class="btn btn-primary" id="create-account-btn"> Create New Account </button> <label> </label>
-                <!-- <button class="btn btn-default" id="forgot-password-btn"> Forgot Password? </button> -->
+            <div class="row">
+                <a class="btn btn-default" href="/create_user"> Create New Account </a>
+                <button type="submit" value="submit" class="btn btn-info"> Log In </button>
             </div>
+		</form>
+                <!-- <button class="btn btn-default" id="forgot-password-btn"> Forgot Password? </button> -->
             
-            <div id="create-form" class="content-page hidden">
+            <!-- <div id="create-form" class="content-page hidden">
                 <div id="alert3thing" style="display: none">
                     <div class="alert alert-dismissible alert-danger">
                       <p id="alert3"></p>
@@ -58,7 +58,7 @@
                 <label> Email Address: </label> <input type="text" id="email"> <br> <br>
                 <button type="button" class="btn btn-default"> Create </button> <label> </label>
                 <button id ="back-to-login-btn" value="createNew" class="btn btn-primary"> Back to Login </button>
-            </div>
+            </div> -->
         </div>
 	</body>
 </html>	
