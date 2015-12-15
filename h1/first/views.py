@@ -327,9 +327,9 @@ def deactivate_ride(request, ride):
             return JsonResponse({'ok': False, 'error': 'Wrong request type, should be POST'})
     if 'deactivate' in request.POST:
         try:
-            deactivate_ride = models.User.objects.get(pk=ride)
-        except:
-            return JsonResponse({'ok': False, 'error': 'Failed to find ride id' + user})
+            deactivate_ride = models.Ride.objects.get(pk=ride)
+        except models.Ride.DoesNotExist:
+            return JsonResponse({'ok': False, 'error': 'Failed to find ride id' + ride})
         deactivate_ride.active = False
         deactivate_ride.save()
     return JsonResponse({'ok':True, 'log': 'Ride Deactivated'})
