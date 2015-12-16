@@ -16,5 +16,6 @@ sudo docker run -d --name webview2 -p 8003:8000 -v /deploy:/app --link exp:exp-a
 sudo docker exec models pip install requests
 sudo docker exec exp pip install requests
 sudo docker exec webview pip install requests
+sudo docker exec webview2 pip install requests 
 sudo docker run -d --name batch --link kafka:kafka --link es:es -v /deploy:/app tp33/django:1.1 python batch.py
 
